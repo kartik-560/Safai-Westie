@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply m-0 p-0 box-border;
+  }
+
+  body {
+    @apply bg-light text-secondary overflow-x-hidden;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply bg-gradient-primary text-white px-11 py-5 border-0 rounded-[20px] 
+           font-extrabold cursor-pointer transition-all duration-300 shadow-purple
+           hover:scale-105 hover:-translate-y-1 hover:shadow-purple-hover;
+  }
+
+  .section-tag {
+    @apply bg-gradient-primary text-white px-4 py-1.5 rounded-full 
+           text-xs font-bold uppercase tracking-wider inline-block mb-5;
+  }
+
+  .mission-card {
+    @apply bg-gray-400 p-5 rounded-[35px] transition-all duration-300 
+           relative overflow-hidden border border-black/5
+           hover:-translate-y-2.5 hover:bg-gray-300 hover:shadow-3d;
+  }
+
+  .toilet-card {
+    @apply bg-white rounded-[25px] p-6 mb-5 shadow-sm
+           transform translate-x-8 opacity-0;
+  }
+
+  .projectile-star {
+    @apply fixed text-accent pointer-events-none text-[2.5rem] z-[9999];
+    filter: drop-shadow(0 0 10px #FFD93D);
+  }
+
+  .loader {
+    @apply fixed inset-0 bg-white z-[9999] flex justify-center items-center;
+  }
+
+  .bg-blob {
+    @apply fixed w-[500px] h-[500px] blur-[80px] opacity-15 -z-10 rounded-full;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-primary bg-clip-text text-transparent;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/85;
+    backdrop-filter: blur(15px);
+  }
+}
+
+
+/* Eye blinking animation */
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+.eye {
+  animation: blink 4s infinite;
+  transform-origin: center;
+}
