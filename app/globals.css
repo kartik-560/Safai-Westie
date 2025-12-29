@@ -12,6 +12,18 @@
   }
 }
 
+/* Movement Section Card Animations */
+.card-fade-in {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.card-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @layer components {
   .btn {
     @apply bg-gradient-primary text-white px-11 py-5 border-0 rounded-[20px] 
@@ -37,7 +49,7 @@
 
   .projectile-star {
     @apply fixed text-accent pointer-events-none text-[2.5rem] z-[9999];
-    filter: drop-shadow(0 0 10px #FFD93D);
+    filter: drop-shadow(0 0 10px #ffd93d);
   }
 
   .loader {
@@ -60,11 +72,16 @@
   }
 }
 
-
 /* Eye blinking animation */
 @keyframes blink {
-  0%, 90%, 100% { transform: scaleY(1); }
-  95% { transform: scaleY(0.1); }
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
 }
 
 .eye {

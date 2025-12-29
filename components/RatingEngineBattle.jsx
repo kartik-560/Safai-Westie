@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -18,6 +18,7 @@ export default function RatingEngineBattle() {
   const scannerRef = useRef(null)
   const currentIndexRef = useRef(0)
   const toiletItemsRef = useRef([])
+  const animationStartedRef = useRef(false)
 
   const toilets = [
     { status: 'clean', icon: '🚽', score: '9.8', badgeColor: 'bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3]' },
@@ -26,13 +27,9 @@ export default function RatingEngineBattle() {
     { status: 'soiled', icon: '💩', germs: true, score: '1.5', badgeColor: 'bg-[#e17055]' },
   ]
 
- const shootStarsAtCenter = () => {
+  const shootStarsAtCenter = useCallback(() => {
     const arena = arenaRef.current
     if (!arena) return
-
-    // Fixed center position where toilet is displayed (arena center)
-    const centerX = arena.offsetWidth / 2
-    const centerY = 320 // Fixed Y position where toilets are
 
     for (let i = 0; i < 3; i++) {
       const star = document.createElement('div')
@@ -48,7 +45,6 @@ export default function RatingEngineBattle() {
       
       arena.appendChild(star)
       
-      // Animate from top (scanner) to center (toilet)
       gsap.fromTo(star, 
         {
           opacity: 0,
@@ -65,7 +61,6 @@ export default function RatingEngineBattle() {
           delay: i * 0.1,
           ease: 'back.out(1.2)',
           onComplete: () => {
-            // Fade away
             gsap.to(star, {
               opacity: 0,
               scale: 0,
@@ -77,10 +72,11 @@ export default function RatingEngineBattle() {
         }
       )
     }
-  }
+  }, [])
 
-
-  const rejectToilet = (targetElement) => {
+  const rejectToilet = useCallback((targetElement) => {
+    if (!targetElement) return
+    
     gsap.to(targetElement, {
       x: '+=12',
       rotation: 6,
@@ -95,94 +91,119 @@ export default function RatingEngineBattle() {
         })
       }
     })
-  }
+  }, [])
 
-const processNext = () => {
-  const currentIndex = currentIndexRef.current
-  const item = toiletItemsRef.current[currentIndex]
-  const arena = arenaRef.current
-  
-  if (!item || !arena) return
+  const processNext = useCallback(() => {
+    if (!animationStartedRef.current) return
+    
+    const currentIndex = currentIndexRef.current
+    const item = toiletItemsRef.current[currentIndex]
+    const arena = arenaRef.current
+    const conveyor = conveyorRef.current
+    const ray = rayRef.current
+    
+    if (!item || !arena || !conveyor || !ray) {
+      console.warn('Missing refs for animation')
+      return
+    }
 
-  const arenaRect = arena.getBoundingClientRect()
-  
-  // Calculate perfect center position
-  const targetX = (arenaRect.width / 2) - (currentIndex * 300) - 90
+    const arenaRect = arena.getBoundingClientRect()
+    const targetX = (arenaRect.width / 2) - (currentIndex * 300) - 90
 
-  gsap.to(conveyorRef.current, {
-    x: targetX,
-    duration: 1.2,
-    ease: 'power2.inOut',
-    onComplete: () => {
-      // Make current item active
-      toiletItemsRef.current.forEach((el, i) => {
-        if (el) {
-          gsap.to(el, { opacity: i === currentIndex ? 1 : 0.2, duration: 0.4 })
-        }
-      })
-
-      // Scan animation
-      gsap.timeline()
-        .to(rayRef.current, {
-          opacity: 0.6,
-          height: '200px',
-          duration: 0.4
-        })
-        .to(rayRef.current, {
-          opacity: 0,
-          height: 0,
-          duration: 0.2,
-          delay: 0.4,
-          onComplete: () => {
-            if (toilets[currentIndex].status === 'clean') {
-              // Pass the toilet icon div specifically
-              const toiletIcon = item.querySelector('div[class*="text-[5rem]"]')
-              shootStarsAtCenter(toiletIcon || item)
-            } else {
-              rejectToilet(item)
-            }
-
-            currentIndexRef.current = (currentIndexRef.current + 1) % toilets.length
-            setTimeout(processNext, 2500)
+    gsap.to(conveyor, {
+      x: targetX,
+      duration: 1.2,
+      ease: 'power2.inOut',
+      onComplete: () => {
+        // Make current item active
+        toiletItemsRef.current.forEach((el, i) => {
+          if (el) {
+            gsap.to(el, { opacity: i === currentIndex ? 1 : 0.2, duration: 0.4 })
           }
         })
-    }
-  })
-}
 
+        // Scan animation
+        gsap.timeline()
+          .to(ray, {
+            opacity: 0.6,
+            height: '200px',
+            duration: 0.4
+          })
+          .to(ray, {
+            opacity: 0,
+            height: 0,
+            duration: 0.2,
+            delay: 0.4,
+            onComplete: () => {
+              if (toilets[currentIndex].status === 'clean') {
+                shootStarsAtCenter()
+              } else {
+                rejectToilet(item)
+              }
+
+              currentIndexRef.current = (currentIndexRef.current + 1) % toilets.length
+              
+              if (animationStartedRef.current) {
+                setTimeout(processNext, 2500)
+              }
+            }
+          })
+      }
+    })
+  }, [toilets, shootStarsAtCenter, rejectToilet])
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Floating animation for Flo
-      gsap.to(battleFloRef.current, {
-        y: -15,
-        duration: 1.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'power1.inOut'
-      })
+    // Reset state on mount
+    currentIndexRef.current = 0
+    animationStartedRef.current = false
 
-      // Start battle animation on scroll
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top 60%',
-        onEnter: () => {
-          setTimeout(() => {
-            processNext()
-          }, 500)
-        },
-        once: true
-      })
-    }, sectionRef)
+    // Wait for DOM to be ready
+    const initTimer = setTimeout(() => {
+      const ctx = gsap.context(() => {
+        // Floating animation for Flo
+        if (battleFloRef.current) {
+          gsap.to(battleFloRef.current, {
+            y: -15,
+            duration: 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: 'power1.inOut'
+          })
+        }
 
-    return () => ctx.revert()
-  }, [])
+        // Start battle animation on scroll
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: 'top 60%',
+          onEnter: () => {
+            if (!animationStartedRef.current) {
+              animationStartedRef.current = true
+              setTimeout(() => {
+                processNext()
+              }, 500)
+            }
+          },
+          once: true
+        })
+      }, sectionRef)
+
+      return () => {
+        animationStartedRef.current = false
+        ctx.revert()
+      }
+    }, 100)
+
+    return () => {
+      clearTimeout(initTimer)
+      animationStartedRef.current = false
+    }
+  }, [processNext])
 
   return (
     <section
       ref={sectionRef}
       id="battle"
-      className="py-24 px-5 text-center "
+      className="py-24 px-5 text-center"
     >
       <span
         className="inline-block bg-[#6C5CE7]/10 text-[#6C5CE7] px-4 py-1.5 

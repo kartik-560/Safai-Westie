@@ -1,7 +1,13 @@
 import { Plus_Jakarta_Sans } from 'next/font/google'
+import Navigation from '@/components/Navigation'
+import Footer from '@/components/Footer'
+import WhatsAppFloat from '@/components/WhatsAppFloat'
+import BackgroundBlobs from '@/components/BackgroundBlobs'
+import ScrollTriggerCleanup from '@/components/ScrollTriggerCleanup'
 import './globals.css'
+import WaterBubbles from '@/components/WaterBubbles'
 
-const plusJakarta = Plus_Jakarta_Sans({ 
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['400', '600', '800'],
   variable: '--font-plus-jakarta',
@@ -14,9 +20,18 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
-      <body className={plusJakarta.className}>{children}</body>
+      <body className={plusJakarta.className}>
+        <ScrollTriggerCleanup />
+        <BackgroundBlobs />
+        <WaterBubbles/>
+        <Navigation />
+        {children}
+        <Footer />
+        <WhatsAppFloat />
+      </body>
     </html>
   )
 }
