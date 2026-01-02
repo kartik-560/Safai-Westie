@@ -13,7 +13,7 @@ export default function ScrollTriggerCleanup() {
   useEffect(() => {
     // Kill all ScrollTriggers on route change
     ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-    
+
     // Refresh after a delay to recalculate positions
     const timer = setTimeout(() => {
       ScrollTrigger.refresh()

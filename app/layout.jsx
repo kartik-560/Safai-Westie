@@ -5,7 +5,6 @@ import WhatsAppFloat from '@/components/WhatsAppFloat'
 import BackgroundBlobs from '@/components/BackgroundBlobs'
 import ScrollTriggerCleanup from '@/components/ScrollTriggerCleanup'
 import './globals.css'
-import WaterBubbles from '@/components/WaterBubbles'
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -21,14 +20,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
+  // useScrollToTop();
+
   return (
+
     <html lang="en">
+
       <body className={plusJakarta.className}>
+
         <ScrollTriggerCleanup />
         <BackgroundBlobs />
-        <WaterBubbles/>
+
         <Navigation />
+        {/* <PageWrapper> */}
         {children}
+        {/* </PageWrapper > */}
         <Footer />
         <WhatsAppFloat />
       </body>

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api'
 import { Loader2, Search, X, Navigation, Map as MapIcon, Satellite } from 'lucide-react'
-import ToiletCard from './ToiletCard'
 
 const libraries = ['places']
 
@@ -23,7 +22,7 @@ function MapTypeToggle({ mapType, onChange }) {
       <button
         onClick={() => onChange('roadmap')}
         className={`px-3 py-2 text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 rounded-lg backdrop-blur-sm shadow-lg ${mapType === 'roadmap'
-          ? 'bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white  '
+          ? 'bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white'
           : 'bg-white/80 text-gray-700 hover:bg-white/90'
           }`}
         title="Map View"
@@ -35,7 +34,7 @@ function MapTypeToggle({ mapType, onChange }) {
       <button
         onClick={() => onChange('hybrid')}
         className={`px-3 py-2 text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 rounded-lg backdrop-blur-sm shadow-lg ${mapType === 'hybrid'
-          ? 'bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white  '
+          ? 'bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white'
           : 'bg-white/80 text-gray-700 hover:bg-white/90'
           }`}
         title="Hybrid View"
@@ -50,20 +49,21 @@ function MapTypeToggle({ mapType, onChange }) {
 function SearchBar({ onSearch, search, onClear, searchRef }) {
   return (
     <div className="relative" ref={searchRef}>
-      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+      <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
       <input
         type="text"
         placeholder="🔍 Search toilets by name..."
         value={search}
         onChange={onSearch}
-        className="w-full pl-12 pr-10 py-3.5 rounded-full shadow-md border border-gray-200
-                   bg-white focus:outline-none focus:ring-2 focus:ring-[#6C5CE7] 
-                   text-gray-700 text-sm font-medium"
+        className="w-full pl-12 pr-10 py-3.5 rounded-full shadow-md 
+                   bg-slate-800/70 backdrop-blur-sm border border-slate-700
+                   focus:outline-none focus:ring-2 focus:ring-cyan-500 
+                   text-white placeholder-slate-400 text-sm font-medium"
       />
       {search && (
         <button
           onClick={onClear}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200"
         >
           <X className="w-5 h-5" />
         </button>
@@ -77,35 +77,43 @@ function MyLocationButton({ onClick, isLoading }) {
     <button
       onClick={onClick}
       disabled={isLoading}
-      className="absolute bottom-4 left-4 z-10 bg-white rounded-full p-3 
+      className="absolute bottom-4 left-4 z-10 bg-slate-800 rounded-full p-3 
                  shadow-lg hover:shadow-xl transition-all duration-200 
-                 hover:scale-110 active:scale-95 disabled:opacity-50"
+                 hover:scale-110 active:scale-95 disabled:opacity-50
+                 border border-slate-700"
       title="Go to my location"
     >
       {isLoading ? (
-        <Loader2 className="w-6 h-6 animate-spin text-gray-700" />
+        <Loader2 className="w-6 h-6 animate-spin text-cyan-400" />
       ) : (
-        <Navigation className="w-6 h-6 text-gray-700" />
+        <Navigation className="w-6 h-6 text-cyan-400" />
       )}
     </button>
   )
 }
 
 function NearbyToiletCard({ toilet, onDirections, onFeedback }) {
+  const handleFeedbackClick = () => {
+    // Navigate to your form with location ID - opens in new tab
+    window.open(`https://review-form1.vercel.app/?locationId=${toilet.id}`, '_blank')
+  }
+
   return (
-    <div className="bg-white rounded-2xl p-4 shadow-md border border-gray-200 hover:shadow-lg transition-all">
+    <div className="bg-gradient-to-br from-slate-800/70 to-slate-900/70 
+      backdrop-blur-sm rounded-2xl p-4 shadow-md border border-slate-700/50 
+      hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20 transition-all">
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
-          <h4 className="font-bold text-gray-900 text-sm line-clamp-1">{toilet.name}</h4>
-          <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+          <h4 className="font-bold text-white text-sm line-clamp-1">{toilet.name}</h4>
+          <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">
             <span>📍</span>
             <span>{toilet.distance.toFixed(1)} km away</span>
           </p>
         </div>
         {toilet.averageRating && (
-          <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-full">
-            <span className="text-yellow-500 text-sm">⭐</span>
-            <span className="text-sm font-bold text-gray-900">
+          <div className="flex items-center gap-1 bg-yellow-500/20 px-2 py-1 rounded-full border border-yellow-500/30">
+            <span className="text-yellow-400 text-sm">⭐</span>
+            <span className="text-sm font-bold text-yellow-400">
               {toilet.averageRating.toFixed(1)}
             </span>
           </div>
@@ -117,15 +125,15 @@ function NearbyToiletCard({ toilet, onDirections, onFeedback }) {
           onClick={() => onDirections(toilet)}
           className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-500 text-white 
                      px-3 py-2 rounded-lg text-xs font-semibold hover:shadow-md 
-                     transition-all flex items-center justify-center gap-1.5"
+                     hover:shadow-blue-500/30 transition-all flex items-center justify-center gap-1.5"
         >
           <Navigation className="w-3.5 h-3.5" />
           Directions
         </button>
         <button
-          onClick={() => onFeedback(toilet)}
-          className="flex-1 bg-white border-2 border-blue-500 text-blue-600 
-                     px-3 py-2 rounded-lg text-xs font-semibold hover:bg-blue-50 
+          onClick={handleFeedbackClick}
+          className="flex-1 bg-slate-800 border-2 border-cyan-500 text-cyan-400 
+                     px-3 py-2 rounded-lg text-xs font-semibold hover:bg-cyan-500/10 
                      transition-all"
         >
           📝 Feedback
@@ -134,7 +142,6 @@ function NearbyToiletCard({ toilet, onDirections, onFeedback }) {
     </div>
   )
 }
-
 export default function LocatorSection() {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
@@ -150,7 +157,7 @@ export default function LocatorSection() {
   const [showDropdown, setShowDropdown] = useState(false)
   const [userLocation, setUserLocation] = useState(null)
   const [isRequestingLocation, setIsRequestingLocation] = useState(false)
-  const [mapType, setMapType] = useState('roadmap') // NEW: Map type state
+  const [mapType, setMapType] = useState('roadmap')
 
   const mapRef = useRef(null)
   const searchRef = useRef(null)
@@ -162,12 +169,21 @@ export default function LocatorSection() {
     setLoading(true)
     try {
       const response = await fetch(
-        `https://saaf-ai-backend.vercel.app/api/locations/saafai_locations?company_id=${companyId}`
+        `https://saaf-ai-backend.vercel.app/api/locations/saafai_locations?company_id=${companyId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       )
 
-      if (!response.ok) throw new Error('Failed to fetch locations')
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
 
       const data = await response.json()
+      console.log('✅ Fetched locations:', data)
       setLocations(data)
       setFiltered(data)
     } catch (error) {
@@ -316,20 +332,13 @@ export default function LocatorSection() {
     )
   }, [locations])
 
-
   useEffect(() => {
-    if (locations.length > 0 && !userLocation && !isRequestingLocation) {
-      // Optionally auto-request location
-      // requestUserLocation()
-    }
-
     return () => {
       if (watchIdRef.current) {
         navigator.geolocation.clearWatch(watchIdRef.current)
       }
     }
-  }, [locations, userLocation, isRequestingLocation, requestUserLocation])
-
+  }, [])
 
   useEffect(() => {
     if (userLocation && locations.length > 0) {
@@ -395,20 +404,6 @@ export default function LocatorSection() {
     setSelected(null)
   }
 
-  // Handle toilet card click
-  const handleToiletCardClick = (loc) => {
-    const lat = parseFloat(loc.latitude)
-    const lng = parseFloat(loc.longitude)
-
-    setCenter({ lat, lng })
-    setSelected(loc)
-
-    if (mapRef.current) {
-      mapRef.current.panTo({ lat, lng })
-      mapRef.current.setZoom(16)
-    }
-  }
-
   // Handle map type change
   const handleMapTypeChange = (type) => {
     setMapType(type)
@@ -432,13 +427,13 @@ export default function LocatorSection() {
   }, [])
 
   if (loadError) {
-    return <div className="text-center py-8 text-red-600">Error loading maps</div>
+    return <div className="text-center py-8 text-red-400">Error loading maps</div>
   }
 
   if (!isLoaded) {
     return (
       <div className="flex justify-center items-center h-96">
-        <Loader2 className="w-8 h-8 animate-spin text-[#6C5CE7]" />
+        <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
       </div>
     )
   }
@@ -453,7 +448,8 @@ export default function LocatorSection() {
   return (
     <section id="locator" className="px-[5%] py-24">
       <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] h-auto lg:h-[650px] 
-                      bg-white rounded-[50px] overflow-hidden shadow-3d">
+                      bg-gradient-to-br from-slate-800/70 to-slate-900/70 backdrop-blur-sm
+                      rounded-[50px] overflow-hidden shadow-2xl border border-slate-700/50">
 
         {/* Map Section */}
         <div className="bg-[#e1e8ed] h-[400px] lg:h-full flex flex-col">
@@ -467,24 +463,27 @@ export default function LocatorSection() {
 
             {/* Search Results Dropdown */}
             {showDropdown && filtered.length > 0 && (
-              <div className="absolute z-20 w-[calc(100%-2rem)] mt-1 bg-white border border-gray-300 rounded-2xl shadow-xl max-h-60 overflow-y-auto">
+              <div className="absolute z-20 w-[calc(100%-2rem)] mt-1 
+                bg-slate-800 border border-slate-700 rounded-2xl shadow-xl 
+                max-h-60 overflow-y-auto backdrop-blur-sm">
                 {filtered.map((loc) => (
                   <div
                     key={loc.id}
                     onClick={() => handleLocationSelect(loc)}
-                    className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                    className="px-4 py-3 hover:bg-slate-700/50 cursor-pointer 
+                      border-b border-slate-700/50 last:border-b-0 transition-colors"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900">{loc.name}</p>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="font-medium text-white">{loc.name}</p>
+                        <p className="text-xs text-slate-400 mt-1">
                           📍 {loc.address || `${loc.city}, ${loc.state}`}
                         </p>
                       </div>
                       {loc.averageRating && loc.averageRating > 0 && (
                         <div className="flex items-center gap-1 ml-2">
-                          <span className="text-yellow-500">⭐</span>
-                          <span className="text-sm font-medium">{loc.averageRating.toFixed(1)}</span>
+                          <span className="text-yellow-400">⭐</span>
+                          <span className="text-sm font-medium text-white">{loc.averageRating.toFixed(1)}</span>
                         </div>
                       )}
                     </div>
@@ -494,7 +493,9 @@ export default function LocatorSection() {
             )}
 
             {showDropdown && filtered.length === 0 && search && (
-              <div className="absolute z-20 w-[calc(100%-2rem)] mt-1 bg-white border border-gray-300 rounded-2xl shadow-xl p-4 text-center text-gray-500">
+              <div className="absolute z-20 w-[calc(100%-2rem)] mt-1 
+                bg-slate-800 border border-slate-700 rounded-2xl shadow-xl 
+                p-4 text-center text-slate-400 backdrop-blur-sm">
                 No toilets found matching &quot;{search}&quot;
               </div>
             )}
@@ -506,7 +507,6 @@ export default function LocatorSection() {
               isLoading={isRequestingLocation}
             />
 
-            {/* NEW: Map Type Toggle */}
             <MapTypeToggle
               mapType={mapType}
               onChange={handleMapTypeChange}
@@ -514,8 +514,8 @@ export default function LocatorSection() {
 
             {isRequestingLocation && (
               <div className="absolute top-4 left-1/2 -translate-x-1/2 
-                              bg-blue-50 border-2 border-blue-400 text-blue-900 
-                              px-4 py-3 rounded-lg text-sm z-10 shadow-lg">
+                              bg-cyan-500/20 border-2 border-cyan-400 text-cyan-400 
+                              px-4 py-3 rounded-lg text-sm z-10 shadow-lg backdrop-blur-sm">
                 <div className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Getting your location...</span>
@@ -529,17 +529,16 @@ export default function LocatorSection() {
               zoom={13}
               onLoad={(map) => {
                 mapRef.current = map
-                map.setMapTypeId(mapType) // Set initial map type
+                map.setMapTypeId(mapType)
               }}
-              className=""
               options={{
-                gestureHandling: 'greedy',
+                gestureHandling: 'cooperative',
                 disableDefaultUI: false,
                 streetViewControl: false,
                 zoomControl: true,
-                mapTypeControl: false, // We're using custom control
+                mapTypeControl: false,
                 fullscreenControl: false,
-                mapTypeId: mapType // Set map type
+                mapTypeId: mapType
               }}
             >
               {/* User Location Marker */}
@@ -593,9 +592,9 @@ export default function LocatorSection() {
                     maxWidth: 320
                   }}
                 >
-                  <div className="w-full max-w-[280px] sm:max-w-sm">
+                  <div style={{ width: '100%', maxWidth: '280px' }}>
                     {/* Image */}
-                    <div className="relative">
+                    <div style={{ position: 'relative' }}>
                       <img
                         src={
                           selected.images && selected.images.length > 0
@@ -603,79 +602,55 @@ export default function LocatorSection() {
                             : 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500'
                         }
                         alt={selected.name}
-                        className="w-full h-28 sm:h-36 object-cover rounded-t-lg"
+                        style={{ width: '100%', height: '144px', objectFit: 'cover', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
                         onError={(e) => {
                           e.target.src = 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500'
                         }}
                       />
                       {selected.images && selected.images.length > 1 && (
-                        <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 bg-black bg-opacity-70 text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium">
+                        <div style={{
+                          position: 'absolute',
+                          top: '8px',
+                          right: '8px',
+                          backgroundColor: 'rgba(0,0,0,0.7)',
+                          color: 'white',
+                          padding: '4px 8px',
+                          borderRadius: '9999px',
+                          fontSize: '12px',
+                          fontWeight: '500'
+                        }}>
                           {selected.no_of_photos || selected.images.length} photos
                         </div>
                       )}
                       {selected.averageRating && (
-                        <div className="absolute bottom-1.5 left-1.5 sm:bottom-2 sm:left-2 bg-white bg-opacity-95 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full flex items-center gap-0.5 sm:gap-1 shadow-sm">
-                          <span className="text-yellow-500 text-xs sm:text-sm">⭐</span>
-                          <span className="text-xs sm:text-sm font-bold text-gray-900">{selected.averageRating.toFixed(1)}</span>
+                        <div style={{
+                          position: 'absolute',
+                          bottom: '8px',
+                          left: '8px',
+                          backgroundColor: 'rgba(255,255,255,0.95)',
+                          padding: '4px 8px',
+                          borderRadius: '9999px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                          <span style={{ fontSize: '14px' }}>⭐</span>
+                          <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#111' }}>{selected.averageRating.toFixed(1)}</span>
                         </div>
                       )}
                     </div>
 
                     {/* Content */}
-                    <div className="p-3 sm:p-4">
-                      <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1 leading-tight line-clamp-2">
+                    <div style={{ padding: '16px' }}>
+                      <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#111', marginBottom: '8px', lineHeight: '1.4' }}>
                         {selected.name}
                       </h3>
 
-                      <p className="text-[10px] sm:text-xs text-gray-500 mb-2 sm:mb-3 flex items-start gap-1 line-clamp-2">
-                        <span className="flex-shrink-0 mt-0.5">📍</span>
-                        <span className="flex-1">{selected.address || `${selected.city}, ${selected.state} ${selected.pincode}`}</span>
+                      <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '12px', display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
+                        <span style={{ flexShrink: 0, marginTop: '2px' }}>📍</span>
+                        <span>{selected.address || `${selected.city}, ${selected.state} ${selected.pincode}`}</span>
                       </p>
-
-                      {/* Rating */}
-                      {selected.averageRating && (
-                        <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
-                          <div className="flex items-center gap-0.5 sm:gap-1">
-                            <span className="text-yellow-500 text-xs sm:text-sm">⭐</span>
-                            <span className="font-semibold text-xs sm:text-sm text-gray-900">{selected.averageRating.toFixed(1)}</span>
-                          </div>
-                          <span className="text-gray-500 text-[10px] sm:text-xs">
-                            ({selected.ratingCount} {selected.ratingCount === 1 ? 'review' : 'reviews'})
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Amenities */}
-                      {selected.options && Object.keys(selected.options).length > 0 && (
-                        <div className="mb-2 sm:mb-3">
-                          <h4 className="text-[11px] sm:text-xs font-semibold mb-1.5 sm:mb-2 text-gray-800">Amenities</h4>
-                          <div className="flex flex-wrap gap-1">
-                            {selected.options.genderAccess?.map((gender) => (
-                              <span key={gender} className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-blue-100 text-blue-800 text-[10px] sm:text-xs rounded-full font-medium">
-                                {gender.charAt(0).toUpperCase() + gender.slice(1)}
-                              </span>
-                            ))}
-                            {selected.options.isPaid !== undefined && (
-                              <span className={`px-1.5 py-0.5 sm:px-2 sm:py-1 text-[10px] sm:text-xs rounded-full font-medium ${selected.options.isPaid
-                                ? 'bg-yellow-100 text-yellow-800'
-                                : 'bg-green-100 text-green-800'
-                                }`}>
-                                {selected.options.isPaid ? '💰 Paid' : '🆓 Free'}
-                              </span>
-                            )}
-                            {selected.options.is24Hours && (
-                              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-green-100 text-green-800 text-[10px] sm:text-xs rounded-full font-medium">
-                                🕐 24/7
-                              </span>
-                            )}
-                            {selected.options.isHandicapAccessible && (
-                              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-purple-100 text-purple-800 text-[10px] sm:text-xs rounded-full font-medium">
-                                ♿ Accessible
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
 
                       {/* Get Directions Button */}
                       <button
@@ -683,9 +658,25 @@ export default function LocatorSection() {
                           const url = `https://www.google.com/maps/dir/?api=1&destination=${selected.latitude},${selected.longitude}`
                           window.open(url, '_blank')
                         }}
-                        className="w-full mt-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#6C5CE7] text-white rounded-lg text-xs sm:text-sm font-semibold hover:bg-[#5b4bc4] active:bg-[#4a3ba3] transition-colors flex items-center justify-center gap-1.5 sm:gap-2 shadow-md active:scale-95 touch-manipulation"
+                        style={{
+                          width: '100%',
+                          marginTop: '8px',
+                          padding: '10px 16px',
+                          backgroundColor: '#6C5CE7',
+                          color: 'white',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          border: 'none',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
+                          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                        }}
                       >
-                        <Navigation className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <Navigation style={{ width: '16px', height: '16px' }} />
                         Get Directions
                       </button>
                     </div>
@@ -696,11 +687,10 @@ export default function LocatorSection() {
           </div>
         </div>
 
-
-        {/* Sidebar */}
-        <div className="p-6 bg-[#fdfdfd] overflow-y-auto max-h-[650px]">
-          <h2 className="text-2xl font-bold mb-2">Nearby Toilets</h2>
-          <div className="mb-6 text-sm text-gray-600">
+        {/* Sidebar - DARK THEME */}
+        <div className="p-6 bg-slate-900/50 backdrop-blur-sm overflow-y-auto max-h-[650px]">
+          <h2 className="text-2xl font-bold mb-2 text-white">Nearby Toilets</h2>
+          <div className="mb-6 text-sm text-slate-400">
             {userLocation
               ? `Showing ${nearbyToilets.length} closest locations`
               : 'Getting your location...'}
@@ -708,33 +698,34 @@ export default function LocatorSection() {
 
           {loading ? (
             <div className="flex flex-col items-center justify-center py-8">
-              <Loader2 className="w-8 h-8 animate-spin text-[#6C5CE7] mb-2" />
-              <span className="text-gray-600">Loading toilets...</span>
+              <Loader2 className="w-8 h-8 animate-spin text-cyan-400 mb-2" />
+              <span className="text-slate-300">Loading toilets...</span>
             </div>
           ) : !userLocation ? (
             <div className="text-center py-8">
-              <div className="bg-blue-50 rounded-2xl p-6">
-                <Navigation className="w-12 h-12 mx-auto text-blue-500 mb-3" />
-                <p className="text-gray-700 font-medium mb-2">Location Required</p>
-                <p className="text-sm text-gray-600 mb-4">
+              <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-2xl p-6 backdrop-blur-sm">
+                <Navigation className="w-12 h-12 mx-auto text-cyan-400 mb-3" />
+                <p className="text-white font-medium mb-2">Location Required</p>
+                <p className="text-sm text-slate-300 mb-4">
                   Allow location access to see nearby toilets
                 </p>
                 <button
                   onClick={requestUserLocation}
                   className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white 
-                     px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all"
+                     px-6 py-2 rounded-full font-semibold hover:shadow-lg 
+                     hover:shadow-cyan-500/30 transition-all"
                 >
                   Enable Location
                 </button>
               </div>
             </div>
           ) : nearbyToilets.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-slate-400">
               No toilets found nearby
             </div>
           ) : (
             <div className="space-y-3">
-              {nearbyToilets.map((toilet, index) => (
+              {nearbyToilets.map((toilet) => (
                 <NearbyToiletCard
                   key={toilet.id}
                   toilet={toilet}
@@ -743,7 +734,6 @@ export default function LocatorSection() {
                     window.open(url, '_blank')
                   }}
                   onFeedback={(toilet) => {
-                    // TODO: Open feedback form modal
                     alert(`Feedback form for ${toilet.name}`)
                     console.log('Open feedback form for:', toilet)
                   }}
@@ -752,7 +742,6 @@ export default function LocatorSection() {
             </div>
           )}
         </div>
-
       </div>
     </section>
   )

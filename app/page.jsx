@@ -6,11 +6,9 @@ import { ScrollTrigger, TextPlugin, ScrollToPlugin } from 'gsap/all'
 import HeroSection from '@/components/HeroSection'
 import MovementSection from '@/components/MovementSection'
 import LocatorSection from '@/components/LocatorSection'
-
-import GermFightSection from '@/components/GermFightSection'
-import RatingEngineBattle from '@/components/RatingEngineBattle'
-import StakeholderSection from '@/components/StakeholderSection'
-import FacilityManagementSection from '@/components/FacilityManagementSection'
+import HowItWorkSection from "../components/HowItWorkSection"
+import BackgroundBlobs from '@/components/BackgroundBlobs'
+import PageLoader from '@/components/PageLoader'
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrollToPlugin)
 
@@ -41,19 +39,14 @@ export default function Home() {
 
   return (
     <>
-      {loading && (
-        <div className="loader fixed inset-0 z-[9999] flex items-center justify-center bg-white">
-          <h1 className="font-extrabold text-5xl gradient-text">
-            saafAI
-          </h1>
-        </div>
-      )}
-      <main className="bg-gradient-to-b from-white via-emerald-50/20 to-white">
+      <PageLoader/>
+      <main className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 transition-colors duration-300">
+
         <HeroSection />
-        <GermFightSection />
+        <HowItWorkSection />
         <MovementSection />
-        <StakeholderSection/>
-        <FacilityManagementSection/>
+        {/* <StakeholderSection/>
+        <FacilityManagementSection/> */}
         <LocatorSection />
         {/* <RatingEngineBattle /> */}
       </main>
