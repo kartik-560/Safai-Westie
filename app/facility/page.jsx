@@ -17,7 +17,7 @@ import {
     CheckCircle,
     Users
 } from 'lucide-react'
-
+import { useRouter } from "next/navigation";
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger)
 }
@@ -34,7 +34,7 @@ export default function FacilityManagementPage() {
     const solutionInView = useInView(solutionRef, { once: true, amount: 0.1 })
     const benefitsRef = useRef(null)
     const benefitsInView = useInView(benefitsRef, { once: true, amount: 0.1 })
-
+    const router = useRouter();
     useEffect(() => {
         sectionRefs.current.forEach((section) => {
             if (section) {
@@ -68,7 +68,7 @@ export default function FacilityManagementPage() {
     }
 
     return (
-        <main className="w-full min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] ">
+        <main className="w-full min-h-screen  bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 ">
 
             {/* Hero Section */}
             <section
@@ -126,7 +126,9 @@ export default function FacilityManagementPage() {
                         transition={{ duration: 0.8, delay: 0.6 }}
                         className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-2"
                     >
-                        <button className="w-full sm:w-auto
+                        <button
+                            onClick={() => router.push("/contact")}
+                            className="w-full sm:w-auto
                 bg-gradient-to-r from-blue-600 to-cyan-500 text-white 
                 font-bold 
                 py-3 px-6 
@@ -139,7 +141,9 @@ export default function FacilityManagementPage() {
                 inline-flex items-center justify-center">
                             Get API Access →
                         </button>
-                        <button className="w-full sm:w-auto
+                        <button
+                            onClick={() => router.push("/contact")}
+                            className="w-full sm:w-auto
                 bg-slate-800 border-2 border-slate-700 text-white 
                 font-bold 
                 py-3 px-6 
@@ -159,7 +163,7 @@ export default function FacilityManagementPage() {
 
             {/* Product Image Section */}
             <section className="w-full py-16 md:py-24 px-4 md:px-5 overflow-hidden" ref={addSectionRef}>
-                <div className="max-w-6xl mx-auto">
+                <div className="max-w-5xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
@@ -173,13 +177,13 @@ export default function FacilityManagementPage() {
                         <h3 className="text-white text-2xl md:text-3xl font-bold text-center mb-8">
                             Dashboard Preview
                         </h3>
-                        
-                            <img
-                                src="/preview.png"
-                                alt="SaafAI Dashboard Preview showing toilet management system"
-                                className="w-full h-auto object-cover"
-                            />
-                
+
+                        <img
+                            src="/preview.png"
+                            alt="SaafAI Dashboard Preview showing toilet management system"
+                            className="lg:w-[800px] lg:h-[400px]  mx-auto"
+                        />
+
                     </motion.div>
                 </div>
             </section>
@@ -268,7 +272,9 @@ export default function FacilityManagementPage() {
                                     ))}
                                 </ul>
 
-                                <button className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 
+                                <button
+                                    onClick={() => router.push("/contact")}
+                                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 
                                     text-white font-bold py-4 px-8 rounded-full 
                                     hover:shadow-lg hover:shadow-blue-500/50
                                     transition-all duration-300 hover:scale-105">
@@ -346,7 +352,9 @@ export default function FacilityManagementPage() {
                                     ))}
                                 </ul>
 
-                                <button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 
+                                <button
+                                    onClick={() => router.push("/contact")}
+                                    className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 
                                     text-white font-bold py-4 px-8 rounded-full 
                                     hover:shadow-lg hover:shadow-cyan-500/50
                                     transition-all duration-300 hover:scale-105">
@@ -562,7 +570,9 @@ export default function FacilityManagementPage() {
                     <p className="text-lg text-slate-300 mb-6">
                         Ready to standardize quality across your facilities?
                     </p>
-                    <button className="bg-gradient-to-r from-blue-600 to-cyan-500 
+                    <button
+                        onClick={() => router.push("/contact")}
+                        className="bg-gradient-to-r from-blue-600 to-cyan-500 
                         hover:from-blue-700 hover:to-cyan-600 
                         text-white font-bold py-4 px-8 rounded-full 
                         transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/50 hover:scale-105">
@@ -657,11 +667,15 @@ export default function FacilityManagementPage() {
                         operational suite today.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button className="bg-white text-blue-600 font-bold py-4 px-10 
+                        <button
+                            onClick={() => router.push("/contact")}
+                            className="bg-white text-blue-600 font-bold py-4 px-10 
                             rounded-full hover:shadow-xl transition-all duration-300 hover:scale-105">
                             Get API Access
                         </button>
-                        <button className="bg-white/10 backdrop-blur-sm border-2 border-white 
+                        <button
+                            onClick={() => router.push("/contact")}
+                            className="bg-white/10 backdrop-blur-sm border-2 border-white 
                             text-white font-bold py-4 px-10 rounded-full 
                             hover:bg-white/20 transition-all duration-300 hover:scale-105">
                             Get Product Demo

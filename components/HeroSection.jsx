@@ -145,36 +145,8 @@ export default function HeroSection() {
 
 
       </section>
-
-      {/* <section
-        className="py-10 px-4 md:px-5 text-center "
-        id="engine"
-      >
-        <span
-          className="inline-block bg-gradient-to-r from-blue-600/10 to-cyan-500/10 
-               text-transparent bg-clip-text font-bold text-xs uppercase tracking-wide mb-5
-               border border-blue-500/20 px-4 py-1.5 rounded-full"
-        >
-          <span className="bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text">
-            AI Rating Engine
-          </span>
-        </span>
-        <h2
-          ref={engineTitleRef}
-          className="text-[1.8rem] md:text-[2.5rem] font-bold mb-4 md:mb-5 text-white"
-        >
-          {content.engineTitle}
-        </h2>
-        <p
-          ref={engineDescRef}
-          className="text-[#9ca3af] max-w-[720px] mx-auto text-base md:text-lg leading-relaxed"
-        >
-          {content.engineDesc}
-        </p>
-      </section> */}
-
       <section
-        className="py-10 px-4 md:px-5"
+        className="lg:py-10 px-4 md:px-5"
         id="engine"
       >
         <div className="max-w-7xl mx-auto">
@@ -208,12 +180,12 @@ export default function HeroSection() {
 
 
             {/* Right Side - Phone Image */}
-            <div className="flex justify-center lg:justify-end mx-auto mt-10 py-8">
+            <div className="flex justify-center lg:justify-end mx-auto lg:mt-10 lg:py-8 py-5">
               <div className="max-w-sm md:max-w-md lg:max-w-lg">
                 <img
                   src="/phone1.png"
                   alt="SaafAI mobile app showing toilet locations"
-                  className="w-[250px] h-[400px]"
+                  className="lg:w-[250px] lg:h-[400px] w-[150px] h-[250px]"
                 />
               </div>
             </div>
