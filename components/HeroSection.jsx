@@ -78,14 +78,14 @@ export default function HeroSection() {
   // }
 
   const content = {
-      subtitle:
-        "Find nearby public toilets with verified AI hygiene scores before you use them.",
-      engineTitle: "SaafAI Hygiene Scores You Can Trust",
-      engineDesc:
-        `SaafAI is built to make using a public toilet feel less uncertain and more comfortable.
+    subtitle:
+      "Find nearby public toilets with verified AI hygiene scores before you use them.",
+    engineTitle: "SaafAI Hygiene Scores You Can Trust",
+    engineDesc:
+      `SaafAI is built to make using a public toilet feel less uncertain and more comfortable.
          We bring together real-time feedback from people like you, smart hygiene checks, and verified cleaning updates so you know what to expect before you walk in.
          Nosurprises, no second-guessing — just cleaner toilet you can trust, wherever you are.`,
-         engineDesc1:"Because no one should have to think twice before using a public toilet.",
+    engineDesc1: "Because no one should have to think twice before using a public toilet.",
   }
 
   return (
@@ -100,7 +100,7 @@ export default function HeroSection() {
 
         <WaterBubbles />
         {/* floating background blobs */}
-        
+
         <div ref={ninjaContainerRef} className="mb-6 md:mb-8 z-10">
           <NinjaMascot />
         </div>
@@ -114,14 +114,16 @@ export default function HeroSection() {
           Looking for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3]">clean washroom?</span>
         </h1>
 
+
         <p
+          ref={engineDescRef}
           className="hero-subtitle text-base md:text-xl text-[#9ca3af]
-                     mb-4 md:mb-2 max-w-[730px] leading-relaxed min-h-[3.5em]"
+                    max-w-[807px] leading-relaxed min-h-[3.5em]"
         >
           {content.subtitle}
+          <br />
+          {content.engineDesc1}
         </p>
-
-
         <button
           onClick={(e) => {
             const element = document.getElementById('locator')
@@ -140,26 +142,21 @@ export default function HeroSection() {
         >
           Find a Toilet Near Me
         </button>
-   
-    <p
-          ref={engineDescRef}
-          className="text-[#9ca3af] max-w-[720px] mx-auto text-base md:text-lg leading-relaxed"
-        >
-          {content.engineDesc1}
-        </p>
+
+
       </section>
 
-      <section
+      {/* <section
         className="py-10 px-4 md:px-5 text-center "
         id="engine"
       >
-      <span
-        className="inline-block bg-gradient-to-r from-blue-600/10 to-cyan-500/10 
+        <span
+          className="inline-block bg-gradient-to-r from-blue-600/10 to-cyan-500/10 
                text-transparent bg-clip-text font-bold text-xs uppercase tracking-wide mb-5
                border border-blue-500/20 px-4 py-1.5 rounded-full"
-      >
-             <span className="bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text">
-          AI Rating Engine
+        >
+          <span className="bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text">
+            AI Rating Engine
           </span>
         </span>
         <h2
@@ -174,7 +171,56 @@ export default function HeroSection() {
         >
           {content.engineDesc}
         </p>
+      </section> */}
+
+      <section
+        className="py-10 px-4 md:px-5"
+        id="engine"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Left Side - Content */}
+            <div className="text-center lg:text-left">
+              <div className="flex justify-center lg:justify-start">
+                <span
+                  className="inline-block
+         text-transparent bg-clip-text font-bold text-xs uppercase tracking-wide mb-5
+         border border-blue-500/20 px-4 py-1.5 rounded-full"
+                >
+                  <span className="bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text">
+                    AI Rating Engine
+                  </span>
+                </span>
+              </div>
+              <h2
+                ref={engineTitleRef}
+                className="text-[1.8rem] md:text-[2.5rem] max-w-[30rem] font-bold mb-4 md:mb-5 text-white mx-auto lg:mx-0 text-center lg:text-left"
+              >
+                {content.engineTitle}
+              </h2>
+              <p
+                ref={engineDescRef}
+                className="text-[#9ca3af] max-w-[720px] mx-auto lg:mx-0 lg:max-w-none text-base md:text-lg leading-relaxed text-center lg:text-left"
+              >
+                {content.engineDesc}
+              </p>
+            </div>
+
+
+            {/* Right Side - Phone Image */}
+            <div className="flex justify-center lg:justify-end mx-auto mt-10 py-8">
+              <div className="max-w-sm md:max-w-md lg:max-w-lg">
+                <img
+                  src="/phone1.png"
+                  alt="SaafAI mobile app showing toilet locations"
+                  className="w-[250px] h-[400px]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
+
     </>
   )
 }

@@ -59,9 +59,10 @@ export default function HowSaafAIHelpsSection() {
         ))}
       </div>
 
-      <p className="text-[#9ca3af] p-10 text-lg  max-w-2xl mx-auto">
+      <p className="text-gray-900 mt-10 mx-auto text-2xl bg-white rounded-2xl px-6 py-8 max-w-[980px]">
         Your feedback doesn't disappear — it helps make toilets better for everyone.
       </p>
+
     </section>
   )
 }

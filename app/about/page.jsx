@@ -95,8 +95,7 @@ export default function AboutPage() {
                     px-5 sm:px-6 md:px-8 lg:px-6 
                     text-center relative overflow-hidden">
         {/* Decorative Blobs */}
-        <div className="absolute -left-32 top-0 w-72 h-72 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
-        <div className="absolute -right-32 bottom-0 w-80 h-80 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
+      
 
         <div className="max-w-4xl mx-auto z-10 relative">
           <span className="reveal inline-block px-3 py-1 sm:px-4 sm:py-1.5 mb-4 sm:mb-5 md:mb-6 
@@ -112,16 +111,17 @@ export default function AboutPage() {
                    text-[1.75rem] leading-[2.2rem]
                    sm:text-4xl sm:leading-[2.8rem]
                    md:text-5xl md:leading-[3.5rem]
-                   lg:text-6xl lg:leading-tight
+                   lg:text-xl lg:leading-tight
                    xl:text-7xl xl:leading-tight
                    font-extrabold 
                    text-white 
                    mb-5 sm:mb-6 md:mb-7 lg:mb-8
-                   px-2">
+                   px-2 max-w-[980px] mx-auto">
             Redefining the{' '}
             <span className="bg-gradient-to-r from-blue-600 to-cyan-500 text-transparent bg-clip-text">
               Public Toilet Experience
-            </span>{' '}
+            </span>
+            <br/>{' '}
             in India.
           </h1>
 
@@ -188,7 +188,7 @@ export default function AboutPage() {
       <section className="py-24 px-6 md:px-12">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 reveal">
-            <h2 className="text-3xl md:text-5xl font-bold text-white">Impact at Scale</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-white">Imapct scale platorm users</h2>
             <p className="text-slate-400 mt-4">Quantifying our progress toward a cleaner India.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

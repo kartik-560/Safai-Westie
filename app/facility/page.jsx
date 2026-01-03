@@ -166,20 +166,25 @@ export default function FacilityManagementPage() {
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
                         className="relative rounded-3xl overflow-hidden shadow-2xl 
-                            bg-gradient-to-br from-blue-900/30 to-cyan-900/30 p-8 md:p-16 
-                            border border-blue-500/20 hover:border-blue-500/40
-                            transition-all duration-500"
+        bg-gradient-to-br from-blue-900/30 to-cyan-900/30 p-8 md:p-16 
+        border border-blue-500/20 hover:border-blue-500/40
+        transition-all duration-500"
                     >
-                        <div className="bg-slate-800/60 backdrop-blur-sm rounded-2xl p-8 text-center 
-                            min-h-[400px] flex items-center justify-center border border-slate-700/50">
-                            <p className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 
-                                text-transparent bg-clip-text">
-                                Product Dashboard Preview
-                            </p>
-                        </div>
+                        <h3 className="text-white text-2xl md:text-3xl font-bold text-center mb-8">
+                            Dashboard Preview
+                        </h3>
+                        
+                            <img
+                                src="/preview.png"
+                                alt="SaafAI Dashboard Preview showing toilet management system"
+                                className="w-full h-auto object-cover"
+                            />
+                
                     </motion.div>
                 </div>
             </section>
+
+
 
             {/* Integration Options */}
             <section className="w-full py-16 md:py-24 px-4 md:px-5 overflow-hidden" ref={integrationRef}>
