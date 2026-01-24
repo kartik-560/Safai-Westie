@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
         {children}
         {/* </PageWrapper > */}
         <Footer />
-        <WhatsAppFloat />
+        {/* <WhatsAppFloat /> */}
       </body>
     </html>
   )

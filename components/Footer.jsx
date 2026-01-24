@@ -16,7 +16,7 @@ export default function Footer() {
     setInvestorEmail('')
     setInvestorMessage('')
   }
-  
+
   const handleHomeClick = (e) => {
     setIsMobileMenuOpen(false)
 
@@ -114,29 +114,29 @@ export default function Footer() {
             <h4 className="font-bold text-lg mb-4 text-white">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/find-toilet" 
-                      className="text-slate-400 hover:text-cyan-400 transition-colors text-sm 
+                <Link href="/find-toilet"
+                  className="text-slate-400 hover:text-cyan-400 transition-colors text-sm 
                           inline-block hover:translate-x-1 duration-300">
                   Find a Toilet
                 </Link>
               </li>
               <li>
-                <Link href="/rate-toilet" 
-                      className="text-slate-400 hover:text-cyan-400 transition-colors text-sm 
+                <Link href="/rate-toilet"
+                  className="text-slate-400 hover:text-cyan-400 transition-colors text-sm 
                           inline-block hover:translate-x-1 duration-300">
                   Rate a Toilet
                 </Link>
               </li>
               <li>
-                <Link href="/blog" 
-                      className="text-slate-400 hover:text-cyan-400 transition-colors text-sm 
+                <Link href="/blog"
+                  className="text-slate-400 hover:text-cyan-400 transition-colors text-sm 
                           inline-block hover:translate-x-1 duration-300">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="/faq" 
-                      className="text-slate-400 hover:text-cyan-400 transition-colors text-sm 
+                <Link href="/faq"
+                  className="text-slate-400 hover:text-cyan-400 transition-colors text-sm 
                           inline-block hover:translate-x-1 duration-300">
                   FAQ
                 </Link>
@@ -186,16 +186,30 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-slate-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-slate-400 text-sm text-center md:text-left">
-              © 2025 saafAI | A Proud{' '}
+            <div className="text-slate-400 text-sm text-center md:text-left space-x-2">
+              <span>© 2025 saafAI | A Proud</span>
               <span className="bg-gradient-to-r from-blue-600 to-cyan-500 
-                  text-transparent bg-clip-text font-semibold">
+      text-transparent bg-clip-text font-semibold">
                 Swachh Bharat
-              </span>{' '}
-              Partner
-            </p>
+              </span>
+              <span>Partner</span>
+              <span className="hidden md:inline">|</span>
+              <Link
+                href="/privacy-policy"
+                className="hover:text-cyan-400 transition-colors underline-offset-4 hover:underline"
+              >
+                Privacy Policy
+              </Link>
+              {/* <span>|</span>
+              <Link
+                href="/terms"
+                className="hover:text-cyan-400 transition-colors underline-offset-4 hover:underline"
+              >
+                Terms of Service
+              </Link> */}
+            </div>
 
-            {/* Social Links */}
+
             <div className="flex gap-3">
               <a
                 href="https://facebook.com"
