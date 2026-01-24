@@ -16,6 +16,9 @@ export const metadata = {
   title: 'saafAI | No Second Thoughts',
   description: 'Empowering public sanitation with India\'s first AI-driven hygiene rating engine',
   keywords: ['AI', 'sanitation', 'hygiene', 'public toilets', 'India', 'Swachh Bharat'],
+   icons: {
+    icon: '/flo-mascot.png'
+  }
 }
 
 export default function RootLayout({ children }) {
