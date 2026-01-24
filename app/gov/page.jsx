@@ -310,7 +310,7 @@ export default function ULBPage() {
           </motion.div>
 
           {/* Dashboard Preview - Dark themed */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={sanitationInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.95 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -397,7 +397,7 @@ export default function ULBPage() {
                 </svg>
               </button>
             </motion.div>
-          </motion.div>
+          </motion.div> */}
         </div>
       </section>
 

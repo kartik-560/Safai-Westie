@@ -146,7 +146,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-slate-300 text-lg leading-relaxed"
           >
-            Have questions about saafAI? Want to partner with us? Reach out and let's make public sanitation better together.
+            Have questions about saafAI? Or want to partner with us? <br/> Reach out and let's make public sanitation better together.
           </motion.p>
         </div>
 

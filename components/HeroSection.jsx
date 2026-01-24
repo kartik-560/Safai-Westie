@@ -98,7 +98,7 @@ export default function HeroSection() {
                   "
       >
 
-        <WaterBubbles />
+        {/* <WaterBubbles /> */}
         {/* floating background blobs */}
 
         <div ref={ninjaContainerRef} className="mb-6 md:mb-8 z-10">
@@ -185,7 +185,7 @@ export default function HeroSection() {
                 <img
                   src="/phone1.png"
                   alt="SaafAI mobile app showing toilet locations"
-                  className="lg:w-[250px] lg:h-[400px] w-[150px] h-[250px]"
+                  className="lg:w-[200px] lg:h-[400px] w-[150px] h-[250px]"
                 />
               </div>
             </div>
