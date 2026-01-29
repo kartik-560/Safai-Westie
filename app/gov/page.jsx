@@ -848,7 +848,7 @@ export default function ULBPage() {
             </button> */}
           </div>
 
-          <p className="text-sm text-[#9ca3af] mt-8">
+          <p className="text-2xl text-white mt-8 font-bold">
             We facilitate evaluation required for public audit projects.
           </p>
         </div>

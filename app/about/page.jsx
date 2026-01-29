@@ -188,7 +188,7 @@ export default function AboutPage() {
       <section className="py-24 px-6 md:px-12">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 reveal">
-            <h2 className="text-3xl md:text-5xl font-bold text-white">Imapct scale </h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-white">Impact scale </h2>
             <p className="text-slate-400 mt-4">Quantifying our progress toward a cleaner India.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
