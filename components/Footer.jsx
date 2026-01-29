@@ -69,7 +69,7 @@ export default function Footer() {
               </div> */}
               <div className="flex items-start gap-3 text-slate-400">
                 <MapPin className="w-4 h-4 mt-1 flex-shrink-0 text-cyan-400" />
-                <span>Nagpur, Maharashtra, India</span>
+                <span>India</span>
               </div>
             </div>
           </div>
