@@ -158,11 +158,17 @@ export default function LocatorSection() {
   const [userLocation, setUserLocation] = useState(null)
   const [isRequestingLocation, setIsRequestingLocation] = useState(false)
   const [mapType, setMapType] = useState('roadmap')
-
+  const [userCity, setUserCity] = useState(null)
+  const [serviceStatus, setServiceStatus] = useState(null)
+  const [isSubmittingRequest, setIsSubmittingRequest] = useState(false)
+  const [requestSubmitted, setRequestSubmitted] = useState(false)
   const mapRef = useRef(null)
   const searchRef = useRef(null)
   const watchIdRef = useRef(null)
   const companyId = 24
+
+  const SERVICE_CITY = 'nagpur'
+  const SERVICE_RADIUS_KM = 3
 
   // Fetch locations from API
   const fetchToiletLocations = useCallback(async () => {
@@ -231,6 +237,7 @@ export default function LocatorSection() {
         }
         setUserLocation(userPos)
         setCenter(userPos)
+        fetchUserCity(userPos.lat, userPos.lng)
         setIsRequestingLocation(false)
 
         if (locations.length > 0) {
@@ -245,7 +252,7 @@ export default function LocatorSection() {
           }))
 
           const nearest = toiletsWithDistance
-            .filter(loc => !isNaN(loc.distance))
+            .filter(loc => !isNaN(loc.distance) && loc.distance <= SERVICE_RADIUS_KM)
             .sort((a, b) => a.distance - b.distance)
             .slice(0, 5)
 
@@ -332,6 +339,53 @@ export default function LocatorSection() {
     )
   }, [locations])
 
+
+  useEffect(() => {
+    if (!userLocation || !userCity) return
+
+    if (userCity !== SERVICE_CITY) {
+      setServiceStatus('not_available')
+      return
+    }
+
+    if (nearbyToilets.length === 0) {
+      setServiceStatus('out_of_radius')
+    } else {
+      setServiceStatus('available')
+    }
+  }, [userCity, userLocation, nearbyToilets])
+
+
+  const handleRequestService = async () => {
+    if (!userLocation || !serviceStatus || isSubmittingRequest || requestSubmitted) return
+
+    setIsSubmittingRequest(true)
+
+    try {
+      await fetch('https://dash-backend-five.vercel.app/api/service-req', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          latitude: userLocation.lat,
+          longitude: userLocation.lng,
+          city: userCity,
+          requestType:
+            serviceStatus === 'not_available'
+              ? 'CITY_NOT_AVAILABLE'
+              : 'NO_TOILET_WITHIN_RADIUS',
+        }),
+      })
+
+      setRequestSubmitted(true) // ✅ UI trigger
+    } catch (err) {
+      console.error(err)
+      alert('❌ Failed to submit request')
+    } finally {
+      setIsSubmittingRequest(false)
+    }
+  }
+
+
   useEffect(() => {
     return () => {
       if (watchIdRef.current) {
@@ -341,25 +395,49 @@ export default function LocatorSection() {
   }, [])
 
   useEffect(() => {
-    if (userLocation && locations.length > 0) {
-      const toiletsWithDistance = locations.map(loc => ({
-        ...loc,
-        distance: calculateDistance(
-          userLocation.lat,
-          userLocation.lng,
-          parseFloat(loc.latitude),
-          parseFloat(loc.longitude)
-        )
-      }))
+    if (!userLocation || locations.length === 0) return
 
-      const nearest = toiletsWithDistance
-        .filter(loc => !isNaN(loc.distance))
-        .sort((a, b) => a.distance - b.distance)
-        .slice(0, 5)
+    const toiletsWithDistance = locations.map(loc => ({
+      ...loc,
+      distance: calculateDistance(
+        userLocation.lat,
+        userLocation.lng,
+        parseFloat(loc.latitude),
+        parseFloat(loc.longitude)
+      ),
+    }))
 
-      setNearbyToilets(nearest)
-    }
+    const withinRadius = toiletsWithDistance
+      .filter(
+        loc =>
+          !isNaN(loc.distance) &&
+          loc.distance <= SERVICE_RADIUS_KM // ✅ HARD RULE
+      )
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 5)
+
+    setNearbyToilets(withinRadius)
   }, [userLocation, locations])
+
+
+
+  const fetchUserCity = async (lat, lng) => {
+    try {
+      const res = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+      )
+      const data = await res.json()
+
+      const cityComponent = data.results?.[0]?.address_components?.find(c =>
+        c.types.includes('locality')
+      )
+
+      setUserCity(cityComponent?.long_name?.toLowerCase() || 'unknown')
+    } catch (err) {
+      console.error('Failed to fetch city', err)
+      setUserCity('unknown')
+    }
+  }
 
   // Handle search input changes
   const handleInputChange = (e) => {
@@ -444,6 +522,22 @@ export default function LocatorSection() {
     const lng = parseFloat(loc.longitude)
     return !isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0
   })
+
+  const sidebarToilets =
+    search.trim().length > 0
+      ? filtered.map(loc => ({
+        ...loc,
+        distance: userLocation
+          ? calculateDistance(
+            userLocation.lat,
+            userLocation.lng,
+            parseFloat(loc.latitude),
+            parseFloat(loc.longitude)
+          )
+          : null,
+      }))
+      : nearbyToilets
+
 
   return (
     <section id="locator" className="px-[5%] py-24">
@@ -691,9 +785,11 @@ export default function LocatorSection() {
         <div className="p-6 bg-slate-900/50 backdrop-blur-sm overflow-y-auto max-h-[650px]">
           <h2 className="text-2xl font-bold mb-2 text-white">Nearby Toilets</h2>
           <div className="mb-6 text-sm text-slate-400">
-            {userLocation
-              ? `Showing ${nearbyToilets.length} closest locations`
-              : 'Getting your location...'}
+            {!userLocation
+              ? 'Getting your location...'
+              : search.trim()
+                ? `Showing ${sidebarToilets.length} search results`
+                : `Showing ${nearbyToilets.length} closest locations`}
           </div>
 
           {loading ? (
@@ -719,28 +815,102 @@ export default function LocatorSection() {
                 </button>
               </div>
             </div>
-          ) : nearbyToilets.length === 0 ? (
-            <div className="text-center py-8 text-slate-400">
-              No toilets found nearby
+          ) : search.trim() ? (
+            // 🔍 SEARCH MODE — IGNORE RADIUS & SERVICE STATUS
+            sidebarToilets.length === 0 ? (
+              <p className="text-center text-slate-400">
+                No toilets found for "{search}"
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {sidebarToilets.map((toilet) => (
+                  <NearbyToiletCard
+                    key={toilet.id}
+                    toilet={toilet}
+                    onDirections={(toilet) => {
+                      const url = `https://www.google.com/maps/dir/?api=1&destination=${toilet.latitude},${toilet.longitude}`
+                      window.open(url, '_blank')
+                    }}
+                  />
+                ))}
+              </div>
+            )
+          ) : serviceStatus === 'not_available' ? (
+            <div className="text-center py-8">
+              <p className="text-white font-semibold mb-2">
+                🚫 SaafAI is not available in your area yet
+              </p>
+              {requestSubmitted ? (
+                <p className="text-green-400 font-semibold">
+                  ✅ Your request has been submitted
+                </p>
+              ) : (
+                <button
+                  onClick={handleRequestService}
+                  disabled={isSubmittingRequest}
+                  className={`bg-gradient-to-r from-red-600 to-orange-500 
+    text-white px-6 py-2 rounded-full font-semibold
+    ${isSubmittingRequest ? 'opacity-60 cursor-not-allowed' : ''}`}
+                >
+                  {isSubmittingRequest ? (
+                    <span className="flex items-center gap-2 justify-center">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Submitting...
+                    </span>
+                  ) : (
+                    'Raise a Request'
+                  )}
+                </button>)}
+
             </div>
-          ) : (
-            <div className="space-y-3">
-              {nearbyToilets.map((toilet) => (
-                <NearbyToiletCard
-                  key={toilet.id}
-                  toilet={toilet}
-                  onDirections={(toilet) => {
-                    const url = `https://www.google.com/maps/dir/?api=1&destination=${toilet.latitude},${toilet.longitude}`
-                    window.open(url, '_blank')
-                  }}
-                  onFeedback={(toilet) => {
-                    alert(`Feedback form for ${toilet.name}`)
-                    console.log('Open feedback form for:', toilet)
-                  }}
-                />
-              ))}
+          ) : serviceStatus === 'out_of_radius' ? (
+            <div className="text-center py-8">
+              <p className="text-white font-semibold mb-2">
+                ⚠️ No SaafAI toilet within 3 km
+              </p>
+              {requestSubmitted ? (
+                <p className="text-green-400 font-semibold">
+                  ✅ Your request has been submitted
+                </p>
+              ) : (
+                <button
+                  onClick={handleRequestService}
+                  disabled={isSubmittingRequest}
+                  className={`bg-gradient-to-r from-yellow-500 to-orange-500 
+    text-white px-6 py-2 rounded-full font-semibold
+    ${isSubmittingRequest ? 'opacity-60 cursor-not-allowed' : ''}`}
+                >
+                  {isSubmittingRequest ? (
+                    <span className="flex items-center gap-2 justify-center">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Submitting...
+                    </span>
+                  ) : (
+                    'Request a Toilet Here'
+                  )}
+                </button>
+              )}
+
             </div>
-          )}
+          )
+            : (
+              <div className="space-y-3">
+                {sidebarToilets.map((toilet) => (
+                  <NearbyToiletCard
+                    key={toilet.id}
+                    toilet={toilet}
+                    onDirections={(toilet) => {
+                      const url = `https://www.google.com/maps/dir/?api=1&destination=${toilet.latitude},${toilet.longitude}`
+                      window.open(url, '_blank')
+                    }}
+                    onFeedback={(toilet) => {
+                      alert(`Feedback form for ${toilet.name}`)
+                      console.log('Open feedback form for:', toilet)
+                    }}
+                  />
+                ))}
+              </div>
+            )}
         </div>
       </div>
     </section>
