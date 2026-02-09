@@ -79,13 +79,13 @@ export default function HeroSection() {
 
   const content = {
     subtitle:
-      "Find nearby public toilets with verified AI hygiene scores before you use them.",
+      "Verifying cleanliness in hygiene-critical infrastructure",
     engineTitle: "SaafAI Hygiene Scores You Can Trust",
     engineDesc:
       `SaafAI is built to make using a public toilet feel less uncertain and more comfortable.
          We bring together real-time feedback from people like you, smart hygiene checks, and verified cleaning updates so you know what to expect before you walk in.
          Nosurprises, no second-guessing — just cleaner toilet you can trust, wherever you are.`,
-    engineDesc1: "Because no one should have to think twice before using a public toilet.",
+    engineDesc1: "through objective computer vision and AI-driven intelligence.",
   }
 
   return (
@@ -105,26 +105,44 @@ export default function HeroSection() {
           <NinjaMascot />
         </div>
 
+        <h1 className="
+  text-4xl
+  sm:text-5xl
+  md:text-6xl
+  lg:text-7xl
+  xl:text-8xl
+  font-bold
+  text-white
+">
+          Saaf
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3]">
+            AI
+          </span>
+        </h1>
+
+        <br />
         <h1
           id="main-title"
-          className="text-[clamp(1.8rem,5.5vw,3.4rem)] md:text-[clamp(2.4rem,5vw,3.8rem)]
+          className="   text-[clamp(1.6rem,4.2vw,2.8rem)]
+    md:text-[clamp(2rem,3.6vw,3.2rem)]
                      font-extrabold leading-tight
-                     mb-4 md:mb-6 max-w-[1000px] text-white"
+                     mb-4 md:mb-6 max-w-[1100px] text-white mt-[-10px]"
         >
-          Looking for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3]">clean washroom?</span>
+          The Intelligence Layer for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3]">Global Hygiene</span>
         </h1>
 
 
         <p
           ref={engineDescRef}
-          className="hero-subtitle text-base md:text-xl text-[#9ca3af]
+          className="hero-subtitle text-base md:text-xl text-[#C7D2E0]
+]
                     max-w-[807px] leading-relaxed min-h-[3.5em]"
         >
           {content.subtitle}
           <br />
           {content.engineDesc1}
         </p>
-        <button
+        {/* <button
           onClick={(e) => {
             const element = document.getElementById('locator')
             if (element) {
@@ -141,7 +159,7 @@ export default function HeroSection() {
              transition-all duration-300 cursor-pointer"
         >
           Find a Toilet Near Me
-        </button>
+        </button> */}
 
 
       </section>
