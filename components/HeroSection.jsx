@@ -112,7 +112,7 @@ export default function HeroSection() {
   lg:text-7xl
   xl:text-8xl
   font-bold
-  text-white
+  text-white mt-[-40px]
 ">
           Saaf
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3]">
@@ -136,7 +136,7 @@ export default function HeroSection() {
           ref={engineDescRef}
           className="hero-subtitle text-base md:text-xl text-[#C7D2E0]
 ]
-                    max-w-[760px] leading-relaxed min-h-[3.5em]"
+                    max-w-[760px] leading-relaxed min-h-[3.5em] mt-[-10px]"
         >
           {content.subtitle}
           <br />
