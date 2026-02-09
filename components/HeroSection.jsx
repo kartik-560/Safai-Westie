@@ -79,13 +79,13 @@ export default function HeroSection() {
 
   const content = {
     subtitle:
-      "Verifying cleanliness in hygiene-critical infrastructure",
+      "Verifying cleanliness in hygiene-critical infrastructure through objective computer vision and AI-driven intelligence.",
     engineTitle: "SaafAI Hygiene Scores You Can Trust",
     engineDesc:
       `SaafAI is built to make using a public toilet feel less uncertain and more comfortable.
          We bring together real-time feedback from people like you, smart hygiene checks, and verified cleaning updates so you know what to expect before you walk in.
          Nosurprises, no second-guessing — just cleaner toilet you can trust, wherever you are.`,
-    engineDesc1: "through objective computer vision and AI-driven intelligence.",
+    // engineDesc1: "through objective computer vision and AI-driven intelligence.",
   }
 
   return (
@@ -136,11 +136,11 @@ export default function HeroSection() {
           ref={engineDescRef}
           className="hero-subtitle text-base md:text-xl text-[#C7D2E0]
 ]
-                    max-w-[807px] leading-relaxed min-h-[3.5em]"
+                    max-w-[760px] leading-relaxed min-h-[3.5em]"
         >
           {content.subtitle}
           <br />
-          {content.engineDesc1}
+          {/* {content.engineDesc1} */}
         </p>
         {/* <button
           onClick={(e) => {
