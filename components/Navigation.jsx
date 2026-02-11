@@ -93,17 +93,34 @@ export default function Navigation() {
                 z-[1000] 
                  bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950
                  transition-colors backdrop-blur-md">
-      <Link
-        href="/"
-        onClick={handleHomeClick}
-        className="flex items-center cursor-pointer hover:opacity-80 transition-opacity duration-200"
-      >
-        <img
-          src="/logo.png"
-          alt="saafAI"
-          className="h-7 sm:h-8 md:h-6 lg:h-7 w-auto"
-        />
-      </Link>
+      <div className="flex items-center gap-4">
+        <Link
+          href="/"
+          onClick={handleHomeClick}
+          className="hover:opacity-80 transition-opacity duration-200"
+        >
+          <img
+            src="/logo.png"
+            alt="SaafAI"
+            className="h-7 sm:h-8 md:h-7 lg:h-8 w-auto"
+          />
+        </Link>
+
+        <Link
+          href="/"
+          onClick={handleHomeClick}
+          className="hover:opacity-80 transition-opacity duration-200"
+        >
+          <img
+            src="/Swatcha_bharat1.png"
+            alt="Swachh Bharat"
+            className="h-12 sm:h-14 md:h-16 lg:h-18 w-auto"
+          />
+        </Link>
+
+      </div>
+
+
 
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center gap-6">

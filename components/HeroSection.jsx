@@ -79,13 +79,13 @@ export default function HeroSection() {
 
   const content = {
     subtitle:
-      "Verifying cleanliness in hygiene-critical infrastructure through objective computer vision and AI-driven intelligence.",
+      "Rating cleanliness through computer vision and AI-driven intelligence,",
     engineTitle: "SaafAI Hygiene Scores You Can Trust",
     engineDesc:
       `SaafAI is built to make using a public toilet feel less uncertain and more comfortable.
          We bring together real-time feedback from people like you, smart hygiene checks, and verified cleaning updates so you know what to expect before you walk in.
          Nosurprises, no second-guessing — just cleaner toilet you can trust, wherever you are.`,
-    // engineDesc1: "through objective computer vision and AI-driven intelligence.",
+    engineDesc1: "So that you can use any Toilet without 2nd Thoughts !!",
   }
 
   return (
@@ -128,7 +128,7 @@ export default function HeroSection() {
                      font-extrabold leading-tight
                      mb-4 md:mb-6 max-w-[1100px] text-white mt-[-10px]"
         >
-          The Intelligence Layer for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3]">Global Hygiene</span>
+          The Intelligence Layer for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3]">Toilet Hygiene</span>
         </h1>
 
 
@@ -140,7 +140,9 @@ export default function HeroSection() {
         >
           {content.subtitle}
           <br />
-          {/* {content.engineDesc1} */}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3]">
+          {content.engineDesc1}
+          </span>
         </p>
         {/* <button
           onClick={(e) => {
