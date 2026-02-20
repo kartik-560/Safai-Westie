@@ -343,9 +343,9 @@
                 setNearbyToilets(nearest)
               }
 
-              if (mapRef.current) {
-                mapRef.current.panTo(userPos)
-              }
+              // if (mapRef.current) {
+              //   mapRef.current.panTo(userPos)
+              // }
             },
             (error) => {
               console.log('Watch position update failed:', error.code, error.message)
