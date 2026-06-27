@@ -1,8 +1,16 @@
 "use client";
 import React, { useEffect } from "react";
+import * as tf from '@tensorflow/tfjs';
+import * as mobilenet from '@tensorflow-models/mobilenet';
 
 const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setAppState, toggleView }) {
   useEffect(() => {
+    window.tfModel = null;
+    tf.ready().then(() => {
+      mobilenet.load({ version: 2, alpha: 1.0 }).then(model => {
+        window.tfModel = model;
+      });
+    });
     window.setReactAppState = setAppState;
     window.reactAppState = appState;
     window.toggleDashboardView = toggleView;
@@ -1103,48 +1111,71 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
         canvas.height = height;
         var ctx = canvas.getContext("2d");
         ctx.drawImage(imgOrBitmap, 0, 0, width, height);
-        
-        if (isBitmap && imgOrBitmap.close) imgOrBitmap.close();
-        
-        canvas.toBlob(function(blob) {
-          window.capturedImages = window.capturedImages || {};
-          if (window.capturedImages[id] && window.capturedImages[id].blobUrl) {
-            URL.revokeObjectURL(window.capturedImages[id].blobUrl);
-          }
-          
-          var blobUrl = URL.createObjectURL(blob);
-          window.capturedImages[id] = blob;
-          window.capturedImages[id].blobUrl = blobUrl; // keep track to revoke later
 
-          var tile = document.getElementById("tile-" + id);
-          if (!tile) return;
-          
-          tile.className = "photo-tile captured";
-          tile.onclick = null;
-          tile.innerHTML = '<div style="position:relative;width:100%;height:100%;"><img src="' + blobUrl + '" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" /></div>';
-          
-          var cross = document.createElement("div");
-          cross.className = "photo-cross-btn";
-          cross.innerHTML = '<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-          (function (tid, ttype, tsec) {
-            cross.onclick = function (event) {
-              event.stopPropagation();
-              if (window.capturedImages && window.capturedImages[tid]) {
-                if (window.capturedImages[tid].blobUrl) URL.revokeObjectURL(window.capturedImages[tid].blobUrl);
-                delete window.capturedImages[tid];
-              }
-              window.resetTile(tid);
-              sectionState[tsec][ttype === "before" ? "beforeDone" : "afterDone"][tid] = false;
-              window.checkSectionReady(tsec, ttype);
-            };
-          })(id, type, section);
-          tile.appendChild(cross);
-          
-          sectionState[section][type === "before" ? "beforeDone" : "afterDone"][id] = true;
-          window.checkSectionReady(section, type);
-          
-          canvas.width = 0; canvas.height = 0; canvas = null;
-        }, "image/jpeg", 0.6);
+        function saveBlob() {
+          if (isBitmap && imgOrBitmap.close) imgOrBitmap.close();
+          canvas.toBlob(function(blob) {
+            window.capturedImages = window.capturedImages || {};
+            if (window.capturedImages[id] && window.capturedImages[id].blobUrl) {
+              URL.revokeObjectURL(window.capturedImages[id].blobUrl);
+            }
+            
+            var blobUrl = URL.createObjectURL(blob);
+            window.capturedImages[id] = blob;
+            window.capturedImages[id].blobUrl = blobUrl; // keep track to revoke later
+
+            var tile = document.getElementById("tile-" + id);
+            if (!tile) return;
+            
+            tile.className = "photo-tile captured";
+            tile.onclick = null;
+            tile.innerHTML = '<div style="position:relative;width:100%;height:100%;"><img src="' + blobUrl + '" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" /></div>';
+            
+            var cross = document.createElement("div");
+            cross.className = "photo-cross-btn";
+            cross.innerHTML = '<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+            (function (tid, ttype, tsec) {
+              cross.onclick = function (event) {
+                event.stopPropagation();
+                if (window.capturedImages && window.capturedImages[tid]) {
+                  if (window.capturedImages[tid].blobUrl) URL.revokeObjectURL(window.capturedImages[tid].blobUrl);
+                  delete window.capturedImages[tid];
+                }
+                window.resetTile(tid);
+                sectionState[tsec][ttype === "before" ? "beforeDone" : "afterDone"][tid] = false;
+                window.checkSectionReady(tsec, ttype);
+              };
+            })(id, type, section);
+            tile.appendChild(cross);
+            
+            sectionState[section][type === "before" ? "beforeDone" : "afterDone"][id] = true;
+            window.checkSectionReady(section, type);
+            
+            canvas.width = 0; canvas.height = 0; canvas = null;
+          }, "image/jpeg", 0.6);
+        }
+
+        if (window.tfModel) {
+          window.tfModel.classify(canvas).then(function(results) {
+            var allowedKeywords = ['toilet', 'washbasin', 'basin', 'tub', 'bath', 'shower', 'soap', 'towel', 'plunger', 'plumbing', 'sink', 'urinal', 'seat'];
+            var isRelevant = results.some(function(pred) {
+              var className = pred.className.toLowerCase();
+              return allowedKeywords.some(function(keyword) { return className.includes(keyword); });
+            });
+            
+            if (!isRelevant) {
+              alert("Invalid Image: Please capture a valid photo of a washroom object (toilet, urinal, basin, etc.). Detected: " + results[0].className);
+              if (isBitmap && imgOrBitmap.close) imgOrBitmap.close();
+              return;
+            }
+            saveBlob();
+          }).catch(function(err) {
+            console.error("TF Classification error:", err);
+            saveBlob();
+          });
+        } else {
+          saveBlob();
+        }
       };
 
       if (window.createImageBitmap) {

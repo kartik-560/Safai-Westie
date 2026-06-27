@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@react-google-maps/api": "^2.20.8",
+    "@tensorflow-models/mobilenet": "^2.1.1",
+    "@tensorflow/tfjs": "^4.22.0",
     "@vis.gl/react-google-maps": "^1.7.1",
     "framer-motion": "^12.23.26",
     "gsap": "^3.12.5",
