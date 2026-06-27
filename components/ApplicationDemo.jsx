@@ -459,16 +459,20 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
       var menPhots = ["Men WC", "Men Urinal", "Men Basin"];
       var womenOffset = 0, menOffset = 2;
 
-      function makeThumbs(labels, offset, type) {
+      var wIds = { before: ["bwwc1", "bwb1"], after: ["awwc1", "awb1"] };
+      var mIds = { before: ["bmwc1", "bmu1", "bmb1"], after: ["amwc1", "amu1", "amb1"] };
+
+      function makeThumbs(labels, offset, type, ids) {
         var iconColor = type === 'before' ? '#f97316' : '#22c55e';
         var thumbClass = type === 'before' ? 'cd-photo-thumb' : 'cd-photo-thumb after-photo';
         var html = '';
         for (var i = 0; i < labels.length; i++) {
-          html += '<div class="' + thumbClass + '" data-label="' + labels[i] + '" onclick="window.openGallery(' + (offset + i) + ',\'' + type + '\')">' +
-            '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="1.5" stroke-linecap="round">' +
-            '<path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>' +
-            '<circle cx="12" cy="13" r="4"/></svg>' +
-            '</div>';
+          var imgUrl = (t.photos && t.photos[type] && t.photos[type][ids[i]]) ? t.photos[type][ids[i]] : null;
+          var inner = imgUrl 
+            ? '<img src="' + imgUrl + '" style="width:100%;height:100%;object-fit:cover;border-radius:6px;"/>'
+            : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="1.5" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>';
+          
+          html += '<div class="' + thumbClass + '" data-label="' + labels[i] + '">' + inner + '</div>';
         }
         return html;
       }
@@ -481,11 +485,11 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
         '<div class="cd-photos-head" style="background:linear-gradient(90deg,#fff7f0,#fff);border-bottom-color:#fee2e2;">' +
         '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>' +
         '<span style="font-size:11px;font-weight:700;color:#c2410c;">Before Cleaning</span></div>' +
-        '<div class="cd-photo-grid">' + makeThumbs(womenPhots, womenOffset, 'before') + '</div>' +
+        '<div class="cd-photo-grid">' + makeThumbs(womenPhots, womenOffset, 'before', wIds.before) + '</div>' +
         '<div class="cd-photos-head" style="background:linear-gradient(90deg,#f0fdf4,#fff);border-top:1px solid #e5e7eb;border-bottom:none;">' +
         '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>' +
         '<span style="font-size:11px;font-weight:700;color:#15803d;">After Cleaning</span></div>' +
-        '<div class="cd-photo-grid">' + makeThumbs(womenPhots, womenOffset, 'after') + '</div></div>' +
+        '<div class="cd-photo-grid">' + makeThumbs(womenPhots, womenOffset, 'after', wIds.after) + '</div></div>' +
         '<div class="cd-section-title" style="margin-top:4px;">' +
         '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2" stroke-linecap="round" style="flex-shrink:0">' +
         '<circle cx="12" cy="8" r="4"/><path d="M12 12v9"/><path d="M9 14h6"/></svg><span style="color:#3b82f6;">Men\'s Section</span></div>' +
@@ -493,11 +497,11 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
         '<div class="cd-photos-head" style="background:linear-gradient(90deg,#fff7f0,#fff);border-bottom-color:#fee2e2;">' +
         '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>' +
         '<span style="font-size:11px;font-weight:700;color:#c2410c;">Before Cleaning</span></div>' +
-        '<div class="cd-photo-grid">' + makeThumbs(menPhots, menOffset, 'before') + '</div>' +
+        '<div class="cd-photo-grid">' + makeThumbs(menPhots, menOffset, 'before', mIds.before) + '</div>' +
         '<div class="cd-photos-head" style="background:linear-gradient(90deg,#f0fdf4,#fff);border-top:1px solid #e5e7eb;border-bottom:none;">' +
         '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>' +
         '<span style="font-size:11px;font-weight:700;color:#15803d;">After Cleaning</span></div>' +
-        '<div class="cd-photo-grid">' + makeThumbs(menPhots, menOffset, 'after') + '</div></div>';
+        '<div class="cd-photo-grid">' + makeThumbs(menPhots, menOffset, 'after', mIds.after) + '</div></div>';
 
       document.getElementById("cdBody").innerHTML =
         '<div class="cd-hero"><div class="cd-hero-info"><div class="cd-washroom-name">' +
@@ -1051,27 +1055,127 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
       var st = document.getElementById("slaStatus");
       if (e > 1200) { st.textContent = "Warning"; st.className = "sla-status sla-warning"; } else { st.textContent = "On Track"; st.className = "sla-status sla-on-track"; }
     };
+    
+    window.capturedImages = window.capturedImages || {};
+
+    // Create a singleton global camera input to prevent iOS Safari memory crashes caused by multiple dynamic input elements
+    if (!document.getElementById("globalCameraInput")) {
+      var globalInput = document.createElement("input");
+      globalInput.id = "globalCameraInput";
+      globalInput.type = "file";
+      globalInput.accept = "image/*";
+      globalInput.capture = "environment";
+      globalInput.style.display = "none";
+      document.body.appendChild(globalInput);
+      
+      globalInput.onchange = function(e) {
+        if (window.handleGlobalCameraChange) {
+          window.handleGlobalCameraChange(e);
+        }
+      };
+    }
+
+    window.handleGlobalCameraChange = function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var t = window.currentCameraTarget;
+      if (!t) return;
+      var id = t.id, type = t.type, section = t.section;
+
+      var processImage = function(imgOrBitmap, width, height, isBitmap) {
+        var MAX_WIDTH = 640;
+        var MAX_HEIGHT = 640;
+        
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height = Math.round(height *= MAX_WIDTH / width);
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width = Math.round(width *= MAX_HEIGHT / height);
+            height = MAX_HEIGHT;
+          }
+        }
+        
+        var canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(imgOrBitmap, 0, 0, width, height);
+        
+        if (isBitmap && imgOrBitmap.close) imgOrBitmap.close();
+        
+        canvas.toBlob(function(blob) {
+          window.capturedImages = window.capturedImages || {};
+          if (window.capturedImages[id] && window.capturedImages[id].blobUrl) {
+            URL.revokeObjectURL(window.capturedImages[id].blobUrl);
+          }
+          
+          var blobUrl = URL.createObjectURL(blob);
+          window.capturedImages[id] = blob;
+          window.capturedImages[id].blobUrl = blobUrl; // keep track to revoke later
+
+          var tile = document.getElementById("tile-" + id);
+          if (!tile) return;
+          
+          tile.className = "photo-tile captured";
+          tile.onclick = null;
+          tile.innerHTML = '<div style="position:relative;width:100%;height:100%;"><img src="' + blobUrl + '" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" /></div>';
+          
+          var cross = document.createElement("div");
+          cross.className = "photo-cross-btn";
+          cross.innerHTML = '<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+          (function (tid, ttype, tsec) {
+            cross.onclick = function (event) {
+              event.stopPropagation();
+              if (window.capturedImages && window.capturedImages[tid]) {
+                if (window.capturedImages[tid].blobUrl) URL.revokeObjectURL(window.capturedImages[tid].blobUrl);
+                delete window.capturedImages[tid];
+              }
+              window.resetTile(tid);
+              sectionState[tsec][ttype === "before" ? "beforeDone" : "afterDone"][tid] = false;
+              window.checkSectionReady(tsec, ttype);
+            };
+          })(id, type, section);
+          tile.appendChild(cross);
+          
+          sectionState[section][type === "before" ? "beforeDone" : "afterDone"][id] = true;
+          window.checkSectionReady(section, type);
+          
+          canvas.width = 0; canvas.height = 0; canvas = null;
+        }, "image/jpeg", 0.6);
+      };
+
+      if (window.createImageBitmap) {
+        createImageBitmap(file).then(function(bitmap) {
+          processImage(bitmap, bitmap.width, bitmap.height, true);
+        }).catch(function() {
+          fallback(file);
+        });
+      } else {
+        fallback(file);
+      }
+      
+      function fallback(f) {
+        var img = new Image();
+        var objectUrl = URL.createObjectURL(f);
+        img.onload = function() {
+          processImage(img, img.width, img.height, false);
+          URL.revokeObjectURL(objectUrl);
+          img.src = ''; img = null;
+        };
+        img.src = objectUrl;
+      }
+    };
 
     window.openCamera = function (id, type, section) {
-      var tile = document.getElementById("tile-" + id);
-      if (!tile) return;
-      tile.className = "photo-tile captured";
-      tile.onclick = null;
-      tile.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
-      var cross = document.createElement("div");
-      cross.className = "photo-cross-btn";
-      cross.innerHTML = '<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-      (function (tid, ttype, tsec) {
-        cross.onclick = function (e) {
-          e.stopPropagation();
-          window.resetTile(tid);
-          sectionState[tsec][ttype === "before" ? "beforeDone" : "afterDone"][tid] = false;
-          window.checkSectionReady(tsec, ttype);
-        };
-      })(id, type, section);
-      tile.appendChild(cross);
-      sectionState[section][type === "before" ? "beforeDone" : "afterDone"][id] = true;
-      window.checkSectionReady(section, type);
+      window.currentCameraTarget = { id, type, section };
+      var fileInput = document.getElementById("globalCameraInput");
+      if (fileInput) {
+        fileInput.value = "";
+        fileInput.click();
+      }
     };
 
     window.checkSectionReady = function (section, type) {
@@ -1244,6 +1348,32 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
         clHtml += '<div class="sum-cl-item">' + iconHtml + '<span style="font-size:11px;color:#374151;font-weight:600">' + txt + "</span></div>";
       });
       document.getElementById("summaryChecklist").innerHTML = clHtml;
+      var htmlMap = {
+        womenBefore: "",
+        womenAfter: "",
+        menBefore: "",
+        menAfter: ""
+      };
+
+      if (window.capturedImages) {
+        for (var k in window.capturedImages) {
+          if (!window.capturedImages[k].blobUrl) continue;
+          
+          var section = sectionTiles.women.before.includes(k) || sectionTiles.women.after.includes(k) ? "women" : "men";
+          var type = sectionTiles[section].before.includes(k) ? "Before" : "After";
+          var mapKey = section + type;
+          
+          htmlMap[mapKey] += '<img src="' + window.capturedImages[k].blobUrl + '" style="width:100%;height:100%;object-fit:cover;border-radius:4px;aspect-ratio:1;"/>';
+        }
+      }
+
+      ["womenBefore", "womenAfter", "menBefore", "menAfter"].forEach(function(key) {
+        var el = document.getElementById("sum-" + key + "-thumb");
+        if (el && htmlMap[key]) {
+          el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;padding:4px;width:100%;height:100%;overflow-y:auto;align-content:start;">' + htmlMap[key] + '</div>';
+          el.style.background = "none";
+        }
+      });
       document.getElementById("summaryPage").classList.remove("hidden");
     };
 
@@ -1253,8 +1383,66 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
       document.getElementById("taskCleaningPage").style.display = "flex";
     };
 
-    window.submitTask = function () {
+    window.submitTask = async function () {
+      var submitBtn = document.querySelector(".submit-btn");
+      if (submitBtn) {
+        submitBtn.innerHTML = "Submitting & Scoring...";
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = "0.7";
+      }
+
+      var formData = new FormData();
+      var hasImages = false;
+      var photosObj = { before: {}, after: {} };
+      if (window.capturedImages) {
+        for (var key in window.capturedImages) {
+          if (key.startsWith('b')) photosObj.before[key] = window.capturedImages[key].blobUrl;
+          if (key.startsWith('a')) {
+            photosObj.after[key] = window.capturedImages[key].blobUrl;
+            formData.append("images", window.capturedImages[key], key + ".jpg");
+            hasImages = true;
+          }
+        }
+      }
+      
+      var finalScoreNum = 10.0;
+      var finalScoreStr = "10.0";
+
+      if (hasImages) {
+        try {
+          var res = await fetch("/api/predict", {
+            method: "POST",
+            body: formData
+          });
+          var data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+             var total = 0;
+             var count = 0;
+             for (var i = 0; i < data.length; i++) {
+               if (data[i].score !== undefined) {
+                 var rawScore = Number(data[i].score);
+                 if (rawScore > 10) rawScore = rawScore / 10;
+                 total += rawScore;
+                 count++;
+               }
+             }
+             if (count > 0) {
+                finalScoreNum = total / count;
+                finalScoreStr = finalScoreNum.toFixed(1);
+             }
+          }
+        } catch(err) {
+          console.error("Scoring API Error:", err);
+        }
+      }
+
+      if (submitBtn) {
+        submitBtn.innerHTML = "Confirm & Submit Task";
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+      }
       document.getElementById("summaryPage").classList.add("hidden");
+
       var s = tcpStartTime, e = tcpEndTime || new Date(), dur = Math.floor((e - s) / 1000);
       var fmt = function (d) { return d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }); };
       var newTask = {
@@ -1264,12 +1452,12 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
         started: fmt(s),
         ended: fmt(e),
         duration: ("0" + Math.floor(dur / 60)).slice(-2) + ":" + ("0" + (dur % 60)).slice(-2),
-        rating: 10.0,
-        score: "10.0",
+        rating: finalScoreNum,
+        score: finalScoreStr,
         time: fmt(e),
         date: e.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }),
         timestamp: e.getTime(),
-        photos: { before: {}, after: {} }
+        photos: photosObj
       };
       COMPLETED.push(newTask);
 
@@ -1280,7 +1468,7 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
 
       var newLog = {
         color: 'bg-emerald-500',
-        text: 'Cleaner completed cleaning at ' + newTask.title + ' (Score: 10.0)',
+        text: 'Cleaner completed cleaning at ' + newTask.title + ' (Score: ' + finalScoreStr + ')',
         time: fmt(e)
       };
 
@@ -1292,6 +1480,9 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
           logs: [newLog, ...(prev.logs || [])]
         }));
       }
+
+      // Clear captured images after submission
+      window.capturedImages = {};
 
       document.getElementById("sucStart").textContent = fmt(s);
       document.getElementById("sucEnd").textContent = fmt(e);
@@ -3617,6 +3808,7 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
               <div class="sum-photo-pair">
                 <div class="sum-photo-label before">Before</div>
                 <div
+                  id="sum-womenBefore-thumb"
                   class="sum-photo-thumb"
                   style="background: linear-gradient(135deg, #fff7ed, #fed7aa)"
                 >
@@ -3640,6 +3832,7 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
               <div class="sum-photo-pair">
                 <div class="sum-photo-label after">After</div>
                 <div
+                  id="sum-womenAfter-thumb"
                   class="sum-photo-thumb"
                   style="background: linear-gradient(135deg, #f0fdf4, #bbf7d0)"
                 >
@@ -3681,6 +3874,7 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
               <div class="sum-photo-pair">
                 <div class="sum-photo-label before">Before</div>
                 <div
+                  id="sum-menBefore-thumb"
                   class="sum-photo-thumb"
                   style="background: linear-gradient(135deg, #fff7ed, #fed7aa)"
                 >
@@ -3704,6 +3898,7 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
               <div class="sum-photo-pair">
                 <div class="sum-photo-label after">After</div>
                 <div
+                  id="sum-menAfter-thumb"
                   class="sum-photo-thumb"
                   style="background: linear-gradient(135deg, #f0fdf4, #bbf7d0)"
                 >
@@ -3744,6 +3939,7 @@ const SaafAICleanerApp = React.memo(function SaafAICleanerApp({ appState, setApp
             </div>
             <div id="summaryChecklist"></div>
           </div>
+
         </div>
         <div class="sum-footer">
           <button class="submit-btn" onclick="submitTask()">
