@@ -199,18 +199,31 @@ export default function Navigation() {
           )
         ))}
 
-        {/* Find Toilet Button - Navigation to Locator Section */}
-        <button
-          onClick={handleFindToiletClick}
-          className="bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white 
-                 border-none px-6 py-2.5 rounded-full font-bold cursor-pointer
-                 transition-all duration-300 inline-block no-underline
-                 shadow-[0_8px_16px_rgba(108,92,231,0.3)] text-sm
-                 hover:translate-y-[-2px] hover:scale-[1.02]
-                 hover:shadow-[0_12px_24px_rgba(108,92,231,0.5)]"
-        >
-          Find a Toilet Near Me
-        </button>
+        {/* Find Toilet Button & Demo Button */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleFindToiletClick}
+            className="bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white 
+                   border-none px-6 py-2.5 rounded-full font-bold cursor-pointer
+                   transition-all duration-300 inline-block no-underline
+                   shadow-[0_8px_16px_rgba(108,92,231,0.3)] text-sm
+                   hover:translate-y-[-2px] hover:scale-[1.02]
+                   hover:shadow-[0_12px_24px_rgba(108,92,231,0.5)]"
+          >
+            Find a Toilet
+          </button>
+          <Link
+            href="/demo"
+            className="bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white 
+                   border-none px-6 py-2.5 rounded-full font-bold cursor-pointer
+                   transition-all duration-300 inline-block no-underline
+                   shadow-[0_8px_16px_rgba(108,92,231,0.3)] text-sm
+                   hover:translate-y-[-2px] hover:scale-[1.02]
+                   hover:shadow-[0_12px_24px_rgba(108,92,231,0.5)]"
+          >
+            Try Live Demo
+          </Link>
+        </div>
       </div>
 
       {/* Mobile Menu Button */}
@@ -294,17 +307,29 @@ export default function Navigation() {
               )
             ))}
 
-            {/* Mobile Find Toilet Button - Navigation to Locator Section */}
-            <button
-              onClick={handleFindToiletClick}
-              className="bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white 
-                 px-6 py-3 rounded-full font-bold text-center mt-4
-                 shadow-[0_8px_16px_rgba(108,92,231,0.4)]
-                 hover:shadow-[0_12px_24px_rgba(108,92,231,0.6)]
-                 transition-all duration-300"
-            >
-              Find a Toilet Near Me
-            </button>
+            {/* Mobile Actions */}
+            <div className="flex flex-col gap-3 mt-4">
+              <Link
+                href="/demo"
+                className="bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white 
+                   px-6 py-3 rounded-full font-bold text-center
+                   shadow-[0_8px_16px_rgba(108,92,231,0.4)]
+                   hover:shadow-[0_12px_24px_rgba(108,92,231,0.6)]
+                   transition-all duration-300"
+              >
+                Try Live Demo
+              </Link>
+              <button
+                onClick={handleFindToiletClick}
+                className="bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white 
+                   px-6 py-3 rounded-full font-bold text-center
+                   shadow-[0_8px_16px_rgba(108,92,231,0.4)]
+                   hover:shadow-[0_12px_24px_rgba(108,92,231,0.6)]
+                   transition-all duration-300"
+              >
+                Find a Toilet Near Me
+              </button>
+            </div>
           </div>
         </div>
       )}

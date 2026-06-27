@@ -5,6 +5,7 @@ import gsap from "gsap"
 import NinjaMascot from "./NinjaMascot"
 import Link from "next/link"
 import WaterBubbles from "./WaterBubbles"
+import { MapPin, Monitor } from 'lucide-react'
 export default function HeroSection() {
   const [viewMode, setViewMode] = useState("citizen")
   const engineTitleRef = useRef(null)
@@ -144,26 +145,17 @@ export default function HeroSection() {
           {content.engineDesc1}
           </span>
         </p>
-        {/* <button
-          onClick={(e) => {
-            const element = document.getElementById('locator')
-            if (element) {
-              element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-              })
-            }
-          }}
-          className="bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white 
-             px-6 py-3 mb-8 rounded-full font-bold text-center mt-4
-             shadow-[0_8px_16px_rgba(108,92,231,0.2)]
-             hover:shadow-[0_12px_24px_rgba(108,92,231,0.3)]
-             transition-all duration-300 cursor-pointer"
-        >
-          Find a Toilet Near Me
-        </button> */}
+        <div className="hero-btn-group flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 mb-4">
+          <Link href="/demo" className="btn bg-gradient-to-r from-[#6C5CE7] to-[#00D2D3] text-white px-8 py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity w-full sm:w-auto shadow-[0_8px_16px_rgba(108,92,231,0.2)]">
+            Try the Live Demo <span>&rarr;</span>
+          </Link>
 
+        </div>
 
+        <div className="hero-tagline flex items-center justify-center gap-2 text-[12px] md:text-[13px] text-slate-400 font-medium mt-2">
+          <Monitor className="w-4 h-4" />
+          See SaafAI in action — explore the dashboard and discover real hygiene insights.
+        </div>
       </section>
       <section
         className="lg:py-10 px-4 md:px-5"

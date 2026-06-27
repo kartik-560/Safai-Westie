@@ -1,10 +1,8 @@
 import { Plus_Jakarta_Sans } from 'next/font/google'
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
 import WhatsAppFloat from '@/components/WhatsAppFloat'
 import BackgroundBlobs from '@/components/BackgroundBlobs'
 import ScrollTriggerCleanup from '@/components/ScrollTriggerCleanup'
-import Script from 'next/script'
+import ConditionalLayout from '@/components/ConditionalLayout' // Import the new wrapper
 import './globals.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -23,11 +21,7 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
-
-  // useScrollToTop();
-
   return (
-
     <html lang="en">
       <head>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-24YFERDE1C"></script>
@@ -43,15 +37,14 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={plusJakarta.className}>
-
         <ScrollTriggerCleanup />
         <BackgroundBlobs />
 
-        <Navigation />
-        {/* <PageWrapper> */}
-        {children}
-        {/* </PageWrapper > */}
-        <Footer />
+        {/* Wrap children with the ConditionalLayout */}
+        <ConditionalLayout>
+          {children}
+        </ConditionalLayout>
+        
         {/* <WhatsAppFloat /> */}
       </body>
     </html>
