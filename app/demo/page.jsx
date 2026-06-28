@@ -7,11 +7,7 @@ export default function SafaiPlatform() {
   const [currentView, setCurrentView] = useState('ADMIN'); // 'ADMIN' | 'CLEANER'
   const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-    const saved = localStorage.getItem('safai_current_view');
-    if (saved) setCurrentView(saved);
-  }, []);
+
 
   const handleSetCurrentView = (view) => {
     setCurrentView(view);
@@ -59,6 +55,29 @@ export default function SafaiPlatform() {
     ]
   });
 
+  useEffect(() => {
+    setIsMounted(true);
+    const savedView = localStorage.getItem('safai_current_view');
+    if (savedView) setCurrentView(savedView);
+    
+    const savedState = localStorage.getItem('safai_app_state');
+    if (savedState) {
+      try {
+        setAppState(JSON.parse(savedState));
+      } catch (e) {
+        console.error("Error parsing saved state", e);
+      }
+    }
+  }, []);
+
+  const handleSetAppState = (newStateOrUpdater) => {
+    setAppState((prev) => {
+      const newState = typeof newStateOrUpdater === 'function' ? newStateOrUpdater(prev) : newStateOrUpdater;
+      localStorage.setItem('safai_app_state', JSON.stringify(newState));
+      return newState;
+    });
+  };
+
   return (
     <div className="w-full h-screen overflow-hidden bg-slate-100 font-sans relative text-slate-800 selection:bg-blue-200">
       {isMounted && (
@@ -72,7 +91,7 @@ export default function SafaiPlatform() {
           <div className={currentView === 'CLEANER' ? 'block w-full h-full' : 'hidden'}>
             <ApplicationDemo 
               appState={appState} 
-              setAppState={setAppState} 
+              setAppState={handleSetAppState} 
               toggleView={() => handleSetCurrentView('ADMIN')} 
             />
           </div>
